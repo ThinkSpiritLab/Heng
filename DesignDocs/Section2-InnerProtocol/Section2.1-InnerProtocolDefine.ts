@@ -251,7 +251,7 @@ interface SinglePointResult
     time: number,
 };
 
-interface JudgeResult
+interface JudgeResult extends Response, JudgerMessage
 {
     taskID: TaskID,
     testCaseCount: number,
