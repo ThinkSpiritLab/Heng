@@ -35,14 +35,15 @@ frame "评测系统" {
     ]
   }
 }
-webbackend --> judgerbackend : 评测指令
+webbackend ---> judgerbackend : 评测指令
 webbackend --> judgerbackend : 评测文件更新
-judgerbackend <--> jbfs : 读写题目数据
+statususer <-r-- judgerbackend : 评测系统运行状态
+judgerbackend <---> jbfs : 读写题目数据
 judgerbackend --> judger : 发放评测指令
 judgerbackend --> judger : 发放题目数据
+judgerbackend --> webbackend : 返回评测结果
 judger --> judgerbackend : 返回评测结果
 judger --> judgerbackend : 返回评测机状态
-judgerbackend --> statususer : 评测系统运行状态
 @enduml
 ```
 
