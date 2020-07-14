@@ -104,7 +104,7 @@ const enum CachePolicy
 DISABLE 不要缓存这个文件（比如用户代码）
 SHORT 短期缓存这个文件（比如重测有关文件）
 LONG 长期缓存这个文件（比如竞赛有关文件）
-FORCH 永久缓存这个文件（比如标准比较器）
+FORCE 永久缓存这个文件（比如标准比较器）
  */
 interface FileCacheHandle
 {
