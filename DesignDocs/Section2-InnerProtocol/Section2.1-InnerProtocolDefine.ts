@@ -1,4 +1,4 @@
-type EncryptedNumber = number|string;
+type EncryptedNumber = number | string;
 type JudgerID = number | string;
 interface Response 
 {
@@ -91,7 +91,7 @@ interface QueStatus
 interface JudgerHeartBeat extends JudgerMessage
 {
     readonly time: Date,
-    readonly nextHeartBeat:number,//发送下一次心跳的间隔
+    readonly nextHeartBeat: number,//发送下一次心跳的间隔
     readonly hardWareStatus: HardWareStatus,
     readonly queStatus: QueStatus
 };
@@ -117,10 +117,10 @@ FORCE 永久缓存这个文件（比如标准比较器）
 type FileURL = string;
 interface FileCacheHandle
 {
-    fileURL: FileURL,
-    chacePolicy: CachePolicy,
-    isZip: boolean,
-    fileContent?: ArrayBuffer | string
+    readonly fileURL: FileURL,
+    readonly chacePolicy: CachePolicy,
+    readonly isZip: boolean,
+    readonly fileContent?: ArrayBuffer | string
 };
 /*
 这是关于评测任务涉及的文件的接口
@@ -143,10 +143,10 @@ type IOHandle = PipeHandle | FileHandle;
 
 interface ExcuteableParameter
 {
-    stdin?: IOHandle,
-    stdout?: IOHandle,
-    pipes?: Array<IOHandle>,
-    argvs?: Array<string>
+    readonly stdin?: IOHandle,
+    readonly stdout?: IOHandle,
+    readonly pipes?: Array<IOHandle>,
+    readonly argvs?: Array<string>
 };
 //指定了文件的流向
 /*
@@ -180,18 +180,18 @@ const enum ExcuteableType
 
 interface ExcutionLimit
 {
-    memlimit: number,
-    timelimit: number
+    readonly memlimit: number,
+    readonly timelimit: number
 }
 //时空限制，ms，MB
 
 interface Excuteable
 {
-    type: ExcuteableType,
-    file: FileCacheHandle,
-    limit: ExcutionLimit,
-    cachePolicy: CachePolicy,
-    para?: ExcuteableParameter | Array<ExcuteableParameter>,
+    readonly type: ExcuteableType,
+    readonly file: FileCacheHandle,
+    readonly limit: ExcutionLimit,
+    readonly cachePolicy: CachePolicy,
+    readonly para?: ExcuteableParameter | Array<ExcuteableParameter>,
 };
 /**
  * @member type 指明类型，是编译的依据
@@ -214,15 +214,15 @@ type TaskID = number | string;
 
 interface Task
 {
-    taskID: TaskID,
-    pipeCount: number,
-    file?: FileCacheHandle,
-    filehandles: Array<FileHandle>,
-    testCaseCount: number,
-    failPolicy: FailPolicy,
-    porograms: Array<Excuteable>,
-    finalPorogramIndex: number,
-    userPorogramIndex: number,
+    readonly taskID: TaskID,
+    readonly pipeCount: number,
+    readonly file?: FileCacheHandle,
+    readonly filehandles: Array<FileHandle>,
+    readonly testCaseCount: number,
+    readonly failPolicy: FailPolicy,
+    readonly porograms: Array<Excuteable>,
+    readonly finalPorogramIndex: number,
+    readonly userPorogramIndex: number,
 };
 
 /**
@@ -255,25 +255,25 @@ const enum JudgeResultCode
 
 interface SinglePointResult
 {
-    status: JudgeResultCode,
-    mem: number,
-    time: number,
+    readonly status: JudgeResultCode,
+    readonly mem: number,
+    readonly time: number,
 };
 
 interface JudgeResult extends JudgerMessage
 {
-    taskID: TaskID,
-    testCaseCount: number,
-    results: Array<SinglePointResult>
+    readonly taskID: TaskID,
+    readonly testCaseCount: number,
+    readonly results: Array<SinglePointResult>
 };
 
 interface QueryFile extends JudgerMessage
 {
-    fileURL: FileURL,
-    taskID: TaskID,
+    readonly fileURL: FileURL,
+    readonly taskID: TaskID,
 }
 
 interface FileResponse extends Response, FileCacheHandle
 {
-    fileContent: ArrayBuffer | string
+    readonly fileContent: ArrayBuffer | string
 }
