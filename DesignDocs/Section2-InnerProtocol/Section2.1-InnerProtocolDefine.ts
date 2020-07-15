@@ -90,6 +90,7 @@ interface QueStatus
 interface JudgerHeartBeat extends JudgerMessage
 {
     readonly time: Date,
+    readonly nextHeartBeat:number,//发送下一次心跳的间隔
     readonly hardWareStatus: HardWareStatus,
     readonly queStatus: QueStatus
 };
