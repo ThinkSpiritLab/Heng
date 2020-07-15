@@ -8,6 +8,7 @@ interface Response
 /**
  * status 码与HTTP状态码具有类似含义
  * 200 请求已正常处理
+ * 302 任务已处理（由于没有收到回应，任务已重新分配
  * 403 密钥校验不通过（按照协议应当同时断开链接）
  * 500 内部故障
  */
@@ -259,7 +260,7 @@ interface SinglePointResult
     time: number,
 };
 
-interface JudgeResult extends Response, JudgerMessage
+interface JudgeResult extends JudgerMessage
 {
     taskID: TaskID,
     testCaseCount: number,
