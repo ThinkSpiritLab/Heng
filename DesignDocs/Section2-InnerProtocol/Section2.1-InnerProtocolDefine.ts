@@ -1,4 +1,4 @@
-type EncryptedNumber = string;
+type EncryptedNumber = number|string;
 type JudgerID = number | string;
 interface Response 
 {
