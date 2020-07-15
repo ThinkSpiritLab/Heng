@@ -5,6 +5,12 @@ interface Response
     readonly status: number,
     readonly message?: string
 };
+/**
+ * status 码与HTTP状态码具有类似含义
+ * 200 请求已正常处理
+ * 403 密钥校验不通过（按照协议应当同时断开链接）
+ * 500 内部故障
+ */
 
 interface JudgerMessage
 {
@@ -106,9 +112,10 @@ SHORT 短期缓存这个文件（比如重测有关文件）
 LONG 长期缓存这个文件（比如竞赛有关文件）
 FORCE 永久缓存这个文件（比如标准比较器）
  */
+type FileURL = string;
 interface FileCacheHandle
 {
-    fileURL: string,
+    fileURL: FileURL,
     chacePolicy: CachePolicy,
     isZip: boolean,
     fileContent?: ArrayBuffer | string
@@ -212,8 +219,8 @@ interface Task
     testCaseCount: number,
     failPolicy: FailPolicy,
     porograms: Array<Excuteable>,
-    finalPorogram: Excuteable,
-    userPorogram: Excuteable,
+    finalPorogramIndex: number,
+    userPorogramIndex: number,
 };
 
 /**
@@ -224,8 +231,8 @@ interface Task
  * @member testCaseCount 指示测试点数量
  * @member failPolicy 指示评测结果非AC时的策略
  * @member porograms 指示涉及的程序和管道连接关系
- * @member finalPorogram 指示以哪个程序的输出为最终结果
- * @member userPorogram 指示哪个是用户程序（用于CE和RE判定）
+ * @member finalPorogramIndex 指示以哪个程序的输出为最终结果
+ * @member userPorogramIndex 指示哪个是用户程序（用于CE和RE判定）
  * 以及返回哪个程序的时间和内存结果
  */
 
@@ -257,3 +264,14 @@ interface JudgeResult extends Response, JudgerMessage
     testCaseCount: number,
     results: Array<SinglePointResult>
 };
+
+interface QueryFile extends JudgerMessage
+{
+    fileURL: FileURL,
+    taskID: TaskID,
+}
+
+interface FileResponse extends Response, FileCacheHandle
+{
+    fileContent: ArrayBuffer | string
+}
