@@ -243,19 +243,33 @@ interface Task
 const enum JudgeResultCode
 {
     ACCEPT,
+    //接受
     WRONGANSWER,
+    //比较器拒绝接受
     TLE,
+    //用户程序没有在规定时间内结束
     MLE,
+    //用户程序使用了过多的内存
     RE,
+    //用户程序异常终止或返回值不为0
     CE,
+    //用户程序编译失败
     CTLE,
+    //用户程序编译超时
     CMLE,
+    //用户程序在编译期使用了过多的内存
     CFLE,
+    //用户程序编译过程中使用的硬盘空间过大
     SYSTLE,
+    //用户程序以外的程序运行超时（如spj）
     SYSMLE,
+    //用户程序以外的程序使用了过多的内存（如spj）
     SYSRE,
+    //用户程序以外的程序异常终止或返回值不为0（如spj）
     SYSCE,
+    //用户程序以外的程序编译异常（包括CE/CTLE/CMLE/CFLE)
     UNJUDGED,
+    //由于各种原因没有评测
 };
 
 interface SinglePointResult
