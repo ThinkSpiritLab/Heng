@@ -114,7 +114,7 @@ DISABLE 不要缓存这个文件（比如用户代码）
 SHORT 短期缓存这个文件（比如重测有关文件）
 LONG 长期缓存这个文件（比如竞赛有关文件）
 FORCE 永久缓存这个文件（比如标准比较器）
-INHERT 采用父级别的策略（如题目有关代码和文件采用题目的缓存策略）
+INHERIT 采用父级别的策略（如题目有关代码和文件采用题目的缓存策略）
  */
 type FileURL = string;
 interface FileCacheHandle
