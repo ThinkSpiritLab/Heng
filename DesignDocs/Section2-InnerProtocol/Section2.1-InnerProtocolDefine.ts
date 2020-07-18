@@ -8,7 +8,7 @@ const enum MessageTpye
     HandShakeStep3,
     HandShakeStep4,
     HandShakeStep5,
-    JudgerReadme,
+    JudgerReadme = 8,
     JudgerReadmeResponse,
     JudgerHeartBeat,
     HeartBeatResponse,
@@ -18,7 +18,7 @@ const enum MessageTpye
     JudgeResultResponse,
     QueryFile,
     FileResponse,
-    Abort
+    Abort = 127
 }
 
 interface Message
