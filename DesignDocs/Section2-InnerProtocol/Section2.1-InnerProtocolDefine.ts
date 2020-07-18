@@ -18,6 +18,7 @@ const enum MessageTpye
     JudgeResultResponse,
     QueryFile,
     FileResponse,
+    Abort
 }
 
 interface Message
