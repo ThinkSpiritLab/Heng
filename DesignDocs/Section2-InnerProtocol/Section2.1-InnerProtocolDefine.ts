@@ -1,5 +1,31 @@
 type EncryptedNumber = number | string;
 type JudgerID = number | string;
+
+const enum MessageTpye
+{
+    SimpleResponse,
+    HandShakeStep2,
+    HandShakeStep3,
+    HandShakeStep4,
+    HandShakeStep5,
+    JudgerReadme,
+    JudgerReadmeResponse,
+    JudgerHeartBeat,
+    HeartBeatResponse,
+    Task,
+    TaskResponse,
+    JudgeResult,
+    JudgeResultResponse,
+    QueryFile,
+    FileResponse,
+}
+
+interface Message
+{
+    messageType: MessageTpye,
+    // messageID:number|string,//use socket.io
+}
+
 interface Response 
 {
     readonly status: number,
@@ -28,24 +54,24 @@ interface JudgerMessage
 
 interface JudgerResponse extends Response, JudgerMessage { };
 
-interface HandShakeStep2
+interface HandShakeStep2 extends Message
 {//Juder to Control
     readonly keyNumber: number,
     readonly encrypedRandNumber1: EncryptedNumber
 };
 
-interface HandShakeStep3 extends Response
+interface HandShakeStep3 extends Response, Message
 {//Control to Judger
     readonly reEncrypedRandNumber1: EncryptedNumber,
     readonly encrypedRandNumber2: EncryptedNumber
 };
 
-interface HandShakeStep4 extends Response
+interface HandShakeStep4 extends Response, Message
 {//Judger to Control
     readonly reEncrypedRandNumber2: EncryptedNumber
 };
 
-interface HandShakeStep5 extends Response
+interface HandShakeStep5 extends Response, Message
 {//Control to Judger
     // confirm: boolean,
     readonly judgerID: JudgerID,
@@ -59,7 +85,7 @@ interface ProtocolVersion
     readonly fieldC: number,//错误修复号，应当兼容，除非是错误行为
 };
 
-interface JudgerReadme extends JudgerMessage
+interface JudgerReadme extends JudgerMessage, Message
 {
     readonly protocolVersion: ProtocolVersion,
     // readonly ProtocolVersion: ProtocolVersion | number | string,
@@ -96,7 +122,7 @@ interface QueStatus
     readonly total: number//所有尚未提交的任务数
 };
 
-interface JudgerHeartBeat extends JudgerMessage
+interface JudgerHeartBeat extends JudgerMessage, Message
 {
     readonly time: Date,
     readonly nextHeartBeat: number,//发送下一次心跳的间隔
@@ -104,7 +130,7 @@ interface JudgerHeartBeat extends JudgerMessage
     readonly queStatus: QueStatus
 };
 
-interface HeartBeatResponse extends Response
+interface HeartBeatResponse extends Response, Message
 {
     readonly newHeartBeatInterval?: number
 };
@@ -222,7 +248,7 @@ const enum FailPolicy
 
 type TaskID = number | string;
 
-interface Task
+interface Task extends Message
 {
     readonly taskID: TaskID,
     readonly pipeCount: number,
@@ -293,20 +319,20 @@ interface SinglePointResult
     readonly time: number,
 };
 
-interface JudgeResult extends JudgerMessage
+interface JudgeResult extends JudgerMessage, Message
 {
     readonly taskID: TaskID,
     readonly testCaseCount: number,
     readonly results: Array<SinglePointResult>
 };
 
-interface QueryFile extends JudgerMessage
+interface QueryFile extends JudgerMessage, Message
 {
     readonly fileURL: FileURL,
     readonly taskID: TaskID,
 }
 
-interface FileResponse extends Response, FileCacheHandle
+interface FileResponse extends Response, FileCacheHandle, Message
 {
     readonly fileContent: ArrayBuffer | string
 }
