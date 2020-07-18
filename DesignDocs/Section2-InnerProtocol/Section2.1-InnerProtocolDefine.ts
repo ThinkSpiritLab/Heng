@@ -250,6 +250,8 @@ const enum JudgeResultCode
     //用户程序没有在规定时间内结束
     MLE,
     //用户程序使用了过多的内存
+    OLE,
+    //用户程序输出超限
     RE,
     //用户程序异常终止或返回值不为0
     CE,
@@ -264,6 +266,8 @@ const enum JudgeResultCode
     //用户程序以外的程序运行超时（如spj）
     SYSMLE,
     //用户程序以外的程序使用了过多的内存（如spj）
+    SYSOLE,
+    //用户程序以外的程序输出超限
     SYSRE,
     //用户程序以外的程序异常终止或返回值不为0（如spj）
     SYSCE,
