@@ -107,6 +107,7 @@ const enum CachePolicy
     SHORT,
     LONG,
     FORCE,
+    INHERIT
 };
 /*
 DISABLE 不要缓存这个文件（比如用户代码）
