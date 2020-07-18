@@ -258,6 +258,8 @@ const enum JudgeResultCode
 interface SinglePointResult
 {
     readonly status: JudgeResultCode,
+    readonly finalOutPut: string,
+    // readonly message?:string, //未定具体字段名
     readonly mem: number,
     readonly time: number,
 };
