@@ -1,0 +1,10 @@
+{
+    "name": "heng-controller",
+    "version": "0.0.1",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "build": "tsc",
+        "start": "node build/index.js"
+    }
+}
