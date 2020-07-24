@@ -2,34 +2,35 @@ declare namespace Heng
 {
     declare namespace InternalProtocol
     {
+        type MessageID = number | string;
         interface BasicMessage
         {
-            id: number;
-            type: MessageType;
-            body: unknown;
+            id: MessageID; // 消息的标识符
+            type: MessageType; // 消息的种类
+            body: unknown; // 消息携带的其它信息
         }
 
         export enum MessageType
         {
-            Ack = 1,
-            Version = 2,
-            Verify = 3,
-            JudgerInfo = 4,
+            Ack = 1, // 对其它消息的确认
+            Version = 2, // 声明所支持的协议版本号
+            Verify = 3, // 身份认证消息
+            JudgerInfo = 4, // 评测端自述消息
 
-            StatusRequest = 17,
-            StatusReport = 18,
+            StatusRequest = 17, // 状态请求
+            StatusReport = 18, // 状态消息（心跳或经请求）
 
-            JudgeRequest = 33,
-            JudgeResponse = 34,
+            JudgeRequest = 33, // 评测任务消息
+            JudgeResponse = 34, // 评测结果消息
 
-            Shutdown = 126,
-            Error = 127,
+            Shutdown = 126, // 系统软关闭命令
+            Error = 127, // 出错了
         }
 
         export interface AckMessage extends BasicMessage
         {
             type: MessageType.Ack;
-            body: undefined;
+            body: { replyTo?: MessageID, message?: Message };
         }
 
         type Version = string;
@@ -43,22 +44,22 @@ declare namespace Heng
         export type VerifyPayload =
             | {
                 step: 1;
-                keyNumber: number;
-                encrypedRandNumber1: string;
+                keyNumber: number; // 评测端的密钥号
+                encrypedRandNumber1: string; // 用控制端公钥加密的数字
             }
             | {
                 step: 2;
-                decryptedRandNumber1: string;
-                encrypedRandNumber2: string;
+                decryptedRandNumber1: string; // 用评测端公钥加密的解密结果
+                encrypedRandNumber2: string; // 用评测端公钥加密的数字
             }
             | {
                 step: 3;
-                decryptedRandNumber2: string;
+                decryptedRandNumber2: string; // 用控制端公钥加密的解密结果
             }
             | {
                 step: 4;
-                judgerID: string;
-                connectionToken: string;
+                judgerID: string; // 发放一个全局唯一的评测端id
+                connectionToken: string; // 发放会话用的令牌
             };
 
         export interface VerifyMessage extends BasicMessage
