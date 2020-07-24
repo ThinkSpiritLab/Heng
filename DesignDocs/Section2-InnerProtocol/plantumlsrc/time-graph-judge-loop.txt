@@ -7,14 +7,14 @@ database "题目文件存储" as oss
 loop 评测循环
 hnote over b : 选取一个令牌
 j <-- b : 发送任务给令牌对应的评测机
-hnote over b : 将令牌和任务放入\n活动任务队列
-j --\ b : 任务准备中
-activate j
 note right
 包含不可缓存内容和可缓存内容的URL
 比如用户代码，时空限制等不能或不必缓存的内容
 spj代码，题目输入输出等可缓存内容发送URL
 endnote
+hnote over b : 将令牌和任务放入\n活动任务队列
+j --\ b : 任务准备中
+activate j
 loop Query Cahce
 j --\ b : 任务正在查询缓存
 j --> jb : 查询缓存
