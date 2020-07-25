@@ -295,6 +295,7 @@ declare namespace Heng.InternalProtocol
         result: JudgeResultType;
         time: number;
         memory: number;
+        extraMessage: string;
     }
 
     export interface JudgeResult
@@ -304,15 +305,12 @@ declare namespace Heng.InternalProtocol
         extra?: {
             user?: {
                 compileMessage?: string;
-                stderr?: string;
             };
             spj?: {
                 compileMessage?: string;
-                stderr?: string;
             };
             interactor?: {
                 compileMessage?: string;
-                stderr?: string;
             };
         };
     }
