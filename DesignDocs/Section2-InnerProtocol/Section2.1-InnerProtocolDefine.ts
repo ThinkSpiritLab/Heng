@@ -30,7 +30,7 @@ declare namespace Heng
         export interface AckMessage extends BasicMessage
         {
             type: MessageType.Ack;
-            body: { replyTo?: MessageID, message?: Message };
+            body: { replyTo: MessageID, message?: Message };
         }
 
         type Version = string;
