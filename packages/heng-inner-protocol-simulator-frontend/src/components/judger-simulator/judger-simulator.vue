@@ -94,9 +94,4 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-.tab {
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-</style>
+<style scoped></style>
