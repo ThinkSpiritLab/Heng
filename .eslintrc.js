@@ -10,10 +10,6 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:import/errors",
         "plugin:import/warnings",
-        "plugin:prettier/recommended",
-        "eslint:recommended",
-        "plugin:vue/base",
-        "plugin:vue/essential",
         "prettier"
     ],
     rules: {
