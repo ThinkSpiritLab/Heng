@@ -1,340 +1,361 @@
-type EncryptedNumber = number | string;
-type JudgerID = number | string;
-
-const enum MessageTpye
+declare namespace Heng.InternalProtocol
 {
-    SimpleResponse,
-    HandShakeStep2,
-    HandShakeStep3,
-    HandShakeStep4,
-    HandShakeStep5,
-    JudgerReadme = 8,
-    JudgerReadmeResponse,
-    JudgerHeartBeat,
-    HeartBeatResponse,
-    Task,
-    TaskResponse,
-    JudgeResult,
-    JudgeResultResponse,
-    QueryFile,
-    FileResponse,
-    Abort = 127
-}
+    type ContextID = number | string;
+    // type MessageID = number | string;
+    interface BasicMessage
+    {
+        contextID: ContextID; // 消息的标识符
+        type: MessageType; // 消息的种类
+        body: unknown; // 消息携带的其它信息
+    }
 
-interface Message
-{
-    messageType: MessageTpye,
-    // messageID:number|string,//use socket.io
-}
+    export enum MessageType
+    {
+        Ack = 1, // 对其它消息的确认
+        Version = 2, // 声明所支持的协议版本号
+        Verify = 3, // 身份认证消息
+        JudgerInfo = 4, // 评测端自述消息
 
-interface Response 
-{
-    readonly status: number,
-    readonly message?: string
-};
-/**
- * status 码与HTTP状态码具有类似含义
- * 200 请求的文件已找到或请求的评测已完成
- * 202 请求接受，正在处理
- * 301 任务已处理（由于没有收到回应，任务已重新分配
- * 400 任务代码错误
- * 401 尚未进行身份认证
- * 403 密钥校验不通过（按照协议应当同时断开链接）
- * 404 找不到请求的文件
- * 428 评测已失败由于不能加载文件
- * @deprecated 410 题目已修改，放弃此次评测（在试图请求文件的时候）
- * 500 内部故障
- * 503 评测机或服务器过载（比如分配的任务超过任务令牌限制）
- * 505 协议版本不匹配
- * 507 失败由于没有足够的硬盘空间（不能储存题目数据）
- */
+        StatusRequest = 17, // 状态请求
+        StatusReport = 18, // 状态消息（心跳或经请求）
 
-interface JudgerMessage
-{
-    readonly judgerID: JudgerID//用于标识每个评测机
-};
+        JudgeRequest = 33, // 评测任务消息
+        JudgeResult = 34, // 评测结果消息
+        JudgeState = 35, // 评测状态消息
 
-interface JudgerResponse extends Response, JudgerMessage { };
+        Shutdown = 126, // 系统软关闭命令
+        Error = 127, // 出错了
+    }
+    // ----------------------------------------------------------------
+    export interface AckMessage extends BasicMessage
+    {
+        type: MessageType.Ack;
+        body: undefined;
+    }
 
-interface HandShakeStep2 extends Message
-{//Juder to Control
-    readonly keyNumber: number,
-    readonly encrypedRandNumber1: EncryptedNumber
-};
+    type Version = string;
+    // ----------------------------------------------------------------
+    export interface VersionMessage extends BasicMessage
+    {
+        type: MessageType.Version;
+        body: Version[];
+    }
 
-interface HandShakeStep3 extends Response, Message
-{//Control to Judger
-    readonly reEncrypedRandNumber1: EncryptedNumber,
-    readonly encrypedRandNumber2: EncryptedNumber
-};
+    export type VerifyPayload =
+        | {
+            step: 1;
+            keyNumber: number; // 评测端的密钥号
+            encrypedRandNumber1: string; // 用控制端公钥加密的数字
+        }
+        | {
+            step: 2;
+            decryptedRandNumber1: string; // 用评测端公钥加密的解密结果
+            encrypedRandNumber2: string; // 用评测端公钥加密的数字
+        }
+        | {
+            step: 3;
+            decryptedRandNumber2: string; // 用控制端公钥加密的解密结果
+        }
+        | {
+            step: 4;
+            judgerID: string; // 发放一个全局唯一的评测端id
+            connectionToken: string; // 发放会话用的令牌
+        };
 
-interface HandShakeStep4 extends Response, Message
-{//Judger to Control
-    readonly reEncrypedRandNumber2: EncryptedNumber
-};
+    export interface VerifyMessage extends BasicMessage
+    {
+        type: MessageType.Verify;
+        body: VerifyPayload;
+    }
+    // ----------------------------------------------------------------
+    export interface JudgerInfo
+    {
+        judgerID: string;
+        maxTaskCount: number;
+        name?: string;
+    }
 
-interface HandShakeStep5 extends Response, Message
-{//Control to Judger
-    // confirm: boolean,
-    readonly judgerID: JudgerID,
-    readonly connectionToken: EncryptedNumber
-};
+    export interface JudgerInfoMessage extends BasicMessage
+    {
+        type: MessageType.JudgerInfo;
+        body: JudgerInfo;
+    }
+    // ----------------------------------------------------------------
+    export interface StatusRequestPayload
+    {
+        setReportInterval?: number;
+        immediate: boolean;
+    }
 
-interface ProtocolVersion
-{
-    readonly fieldA: number,//大版本号，不同可能不兼容
-    readonly fieldB: number,//小版本号，应该不会不兼容
-    readonly fieldC: number,//错误修复号，应当兼容，除非是错误行为
-};
+    export interface StatusRequestMessage extends BasicMessage
+    {
+        type: MessageType.StatusRequest;
+        body: StatusRequestPayload;
+    }
+    // ----------------------------------------------------------------
+    export interface CpuUsage
+    {
+        percentage: number;
+        recent?: {
+            [minute: number]: number;
+        };
+    }
 
-interface JudgerReadme extends JudgerMessage, Message
-{
-    readonly protocolVersion: ProtocolVersion,
-    // readonly ProtocolVersion: ProtocolVersion | number | string,
-    readonly judgerHostName: string,
-    readonly judgerTaskTokenCount: number
-};
+    export interface MemoryUsage
+    {
+        percentage: number;
+        recent?: {
+            [minute: number]: number;
+        };
+    }
 
-interface CPUPresure
-{
-    readonly _1min: number,
-    readonly _5min: number,
-    readonly _10min: number
-};
+    export interface HardwareStatus
+    {
+        cpu: CpuUsage;
+        memory: MemoryUsage;
+    }
 
-interface MemPresure
-{
-    readonly _1min: number,
-    readonly _5min: number,
-    readonly _10min: number
-};
+    export interface TaskStatus
+    {
+        preparing: {
+            downloading: number;
+            readingCache: number;
+        };
+        pending: number;
+        running: number;
+        finished: number;
+        total: number;
+    }
 
-interface HardWareStatus
-{
-    readonly cpu: CPUPresure,
-    readonly memery: MemPresure
-};
+    type TimeString = string;
 
-interface QueStatus
-{
-    readonly notReady: number,//由于评测文件尚未加载等尚不能开始评测的任务数
-    readonly ready: number,//已经准备好但还未开始评测的任务数
-    readonly running: number,//正在运行中的任务数
-    readonly toSubmit: number,//已经评测结束等待提交结果的任务数
-    readonly total: number//所有尚未提交的任务数
-};
+    export interface StatusReportPayload
+    {
+        time: TimeString;
+        nextReportTime: TimeString;
+        hardware: HardwareStatus;
+        task: TaskStatus;
+    }
 
-interface JudgerHeartBeat extends JudgerMessage, Message
-{
-    readonly time: Date,
-    readonly nextHeartBeat: number,//发送下一次心跳的间隔
-    readonly hardWareStatus: HardWareStatus,
-    readonly queStatus: QueStatus
-};
+    export interface StatusReportMessage extends BasicMessage
+    {
+        type: MessageType.StatusReport;
+        body: StatusReportPayload;
+    }
+    // ----------------------------------------------------------------
+    export type File = {
+        id: string;
+        hashsum?: string;
+    } & (
+            | {
+                url: string;
+                authorization?: string;
+            }
+            | {
+                content: string;
+            }
+        );
 
-interface HeartBeatResponse extends Response, Message
-{
-    readonly newHeartBeatInterval?: number
-};
+    export enum JudgeType
+    {
+        Normal = "normal",
+        Special = "special",
+        Interactive = "interactive",
+    }
+    export enum TestPolicy
+    {
+        Fuse = "fuse",
+        All = "all",
+    }
+    interface Limit
+    {
+        // 运行：内存、时间、输出
+        // 编译: 内存、时间、输出(标准流、生成文件）
 
-const enum CachePolicy
-{
-    DISABLE,
-    SHORT,
-    LONG,
-    FORCE,
-    INHERIT
-};
-/*
-DISABLE 不要缓存这个文件（比如用户代码）
-SHORT 短期缓存这个文件（比如重测有关文件）
-LONG 长期缓存这个文件（比如竞赛有关文件）
-FORCE 永久缓存这个文件（比如标准比较器）
-INHERIT 采用父级别的策略（如题目有关代码和文件采用题目的缓存策略）
- */
-type FileURL = string;
-interface FileCacheHandle
-{
-    readonly fileURL: FileURL,
-    readonly chacePolicy: CachePolicy,
-    readonly isZip: boolean,
-    readonly fileContent?: ArrayBuffer | string
-};
-/*
-这是关于评测任务涉及的文件的接口
-fileURL是这个文件的唯一标识符，必须满足当fileURL一致时文件内容也一致的约束
-cachePolicy的含义见其定义
-当不缓存或者可以确定评测机尚未缓存这个文件时（比如上线时的基线测试）可以直接附加文件内容
-*/
-/*
-如果是zip，缓存解压后的文件
-*/
+        runtime: {
+            memory: number;
+            cpuTime: number;
+            output: number;
+        };
+        compiler: {
+            memory: number;
+            cpuTime: number;
+            output: number;
+            message: number;
+        };
+    }
 
-type FileHandle = string
-/*文件的标识符后缀，实际的标识符应当是 "测试点编号.后缀"
-如 FileHandle为 in，对应的就是 6.in 等文件
-*/
-type PipeHandle = number;
-//命名管道的标识符
+    interface Excuteable
+    {
+        source: File;
+        environment: string; // how to compile or excute
+        limit: Limit;
+    }
 
-type IOHandle = PipeHandle | FileHandle;
+    type DynamicFile =
+        | {
+            type: "builtin";
+            name: string; // "user_source" "user_bin"
+        }
+        | {
+            type: "remote";
+            file: File;
+            name: string;
+        };
 
-interface ExcuteableParameter
-{
-    readonly stdin?: IOHandle,
-    readonly stdout?: IOHandle,
-    readonly pipes?: Array<IOHandle>,
-    readonly argvs?: Array<string>
-};
-//指定了文件的流向
-/*
-简单来说，拼接这样的执行串
-a.out " ".join([pipe[i] for i in pipes]+ argvs) + <stdin + >stdout 
-*/
-/*
-注意，当 IOHandle 为 FileHandle时，要根据当前评测点进行拼接获得压缩包中的文件名
-当 IOHandle为PipeHandle时，应当替换为对应的命名管道的名字
-*/
+    type Judge =
+        | {
+            type: JudgeType.Normal;
+            user: Excuteable;
+        }
+        | {
+            type: JudgeType.Special;
+            user: Excuteable;
+            spj: Excuteable;
+        }
+        | {
+            type: JudgeType.Interactive;
+            user: Excuteable;
+            interactor: Excuteable;
+        };
 
-const enum ExcuteableType
-{
-    C89,
-    C99,
-    C11,
-    CPP03,
-    CPP11,
-    CPP14,
-    CPP17,
-    CPP20,
-    Python27,
-    Python38,
-    OpenJDK180,
-    // javascript,
-    typescript,
-    Rust,
-    bin
-};
-//bin 代表是二进制文件，可以直接执行
+    export interface JudgeRequest
+    {
+        taskId: string;
 
-interface ExcutionLimit
-{
-    readonly memlimit: number,
-    readonly timelimit: number
-}
-//时空限制，ms，MB
+        data?: File; // zip
 
-interface Excuteable
-{
-    readonly type: ExcuteableType,
-    readonly file: FileCacheHandle,
-    readonly limit: ExcutionLimit,
-    readonly cachePolicy: CachePolicy,
-    readonly para?: ExcuteableParameter | Array<ExcuteableParameter>,
-};
-/**
- * @member type 指明类型，是编译的依据
- * @member file 指定了代码文件
- * @member limit 指定了运行这一部分的时空限制
- * @member cachePolicy 指定了对编译的二进制文件的缓存策略
-*/
+        dynamicFiles?: DynamicFile[]; // provide ["user_source","user_bin"]
 
-const enum FailPolicy
-{
-    TEST_ALL,
-    ABORT_ON_FIRST_FAIL,
-};
-/**
- * 评测结果非AC时的策略
- * 不一定要遵守 ABORT_ON_FIRST_FAIL ，因为可以并行评测
- */
+        judge: Judge;
 
-type TaskID = number | string;
+        test?: {
+            cases: {
+                input: string; // file path or dynamic file identifier
+                output: string; // file path or dynamic file identifier
+            }[];
 
-interface Task extends Message
-{
-    readonly taskID: TaskID,
-    readonly pipeCount: number,
-    readonly file?: FileCacheHandle,
-    readonly filehandles: Array<FileHandle>,
-    readonly testCaseCount: number,
-    readonly failPolicy: FailPolicy,
-    readonly porograms: Array<Excuteable>,
-    readonly finalPorogramIndex: number,
-    readonly userPorogramIndex: number,
-};
+            policy: TestPolicy; // 全部/短路
+        };
+    }
+    export interface JudgeRequestMessage extends BasicMessage
+    {
+        type: MessageType.JudgeRequest;
+        body: JudgeRequest;
+    }
+    // ----------------------------------------------------------------
+    export enum JudgeState
+    {
+        ReadingCache = "readingCache",
+        Downloading = "downloading",
+        Pending = "pending",
+        Judging = "judging",
+        Finished = "finished",
+    }
 
-/**
- * @member taskID 指定了任务的 ID 在提交结果时用得到。
- * @member pipeCount 指示应当创建多少命名管道
- * @member file 是包含了所有输入输出文件的压缩包
- * @member filehandles 指示了要提取的文件
- * @member testCaseCount 指示测试点数量
- * @member failPolicy 指示评测结果非AC时的策略
- * @member porograms 指示涉及的程序和管道连接关系
- * @member finalPorogramIndex 指示以哪个程序的输出为最终结果
- * @member userPorogramIndex 指示哪个是用户程序（用于CE和RE判定）
- * 以及返回哪个程序的时间和内存结果
- */
+    export interface JudgeStatePayload
+    {
+        taskId: string;
+        state: JudgeState;
+    }
 
-const enum JudgeResultCode
-{
-    ACCEPT,
-    //接受
-    WRONGANSWER,
-    //比较器拒绝接受
-    TLE,
-    //用户程序没有在规定时间内结束
-    MLE,
-    //用户程序使用了过多的内存
-    OLE,
-    //用户程序输出超限
-    RE,
-    //用户程序异常终止或返回值不为0
-    CE,
-    //用户程序编译失败
-    CTLE,
-    //用户程序编译超时
-    CMLE,
-    //用户程序在编译期使用了过多的内存
-    CFLE,
-    //用户程序编译过程中使用的硬盘空间过大
-    SYSTLE,
-    //用户程序以外的程序运行超时（如spj）
-    SYSMLE,
-    //用户程序以外的程序使用了过多的内存（如spj）
-    SYSOLE,
-    //用户程序以外的程序输出超限
-    SYSRE,
-    //用户程序以外的程序异常终止或返回值不为0（如spj）
-    SYSCE,
-    //用户程序以外的程序编译异常（包括CE/CTLE/CMLE/CFLE)
-    UNJUDGED,
-    //由于各种原因没有评测
-};
+    export interface JudgeStateMessage extends BasicMessage
+    {
+        type: MessageType.JudgeState;
+        body: JudgeStatePayload;
+    }
+    // ----------------------------------------------------------------
+    export enum JudgeResultType
+    {
+        Accepted = "Accepted",
+        WrongAnswer = "WrongAnswer",
 
-interface SinglePointResult
-{
-    readonly status: JudgeResultCode,
-    readonly finalOutPut: string,
-    // readonly message?:string, //未定具体字段名
-    readonly mem: number,
-    readonly time: number,
-};
+        TimeLimitExceeded = "TimeLimitExceeded",
+        MemoryLimitExceeded = "MemoryLimitExceeded",
+        OutpuLimitExceeded = "OutpuLimitExceeded",
+        RuntimeError = "RuntimeError",
 
-interface JudgeResult extends JudgerMessage, Message
-{
-    readonly taskID: TaskID,
-    readonly testCaseCount: number,
-    readonly results: Array<SinglePointResult>
-};
+        CompileError = "CompileError",
+        CompileTimeLimitExceeded = "CompileTimeLimitExceeded",
+        CompileMemoryLimitExceeded = "CompileMemoryLimitExceed",
+        CompileFileLimitExceeded = "CompileFileLimitExceed",
 
-interface QueryFile extends JudgerMessage, Message
-{
-    readonly fileURL: FileURL,
-    readonly taskID: TaskID,
-}
+        SystemError = "SystemError",
+        SystemTimeLimitExceeded = "SystemTimeLimitExceed",
+        SystemMemoryLimitExceeded = "SystemMemoryLimitExceed",
+        SystemOutpuLimitExceeded = "SystemOutpuLimitExceeded",
+        SystemRuntimeError = "SystemRuntimeError",
+        SystemCompileError = "SystemCompileError",
 
-interface FileResponse extends Response, FileCacheHandle, Message
-{
-    readonly fileContent: ArrayBuffer | string
+        Unjudged = "Unjudged",
+    }
+
+    export interface JudgeCaseResult
+    {
+        result: JudgeResultType;
+        time: number;
+        memory: number;
+        extraMessage?: string;
+    }
+
+    export interface JudgeResult
+    {
+        taskId: string;
+        cases: JudgeCaseResult[];
+        extra?: {
+            user?: {
+                compileMessage?: string;
+            };
+            spj?: {
+                compileMessage?: string;
+            };
+            interactor?: {
+                compileMessage?: string;
+            };
+        };
+    }
+
+    export interface JudgeResultMessage extends BasicMessage
+    {
+        type: MessageType.JudgeResult;
+        body: JudgeResult;
+    }
+    // ----------------------------------------------------------------
+    export interface ShutdownRequest
+    {
+        reboot: boolean;
+        rebootDelay?: number;
+        reason?: string;
+    }
+
+    export interface ShutdownMessage extends BasicMessage
+    {
+        type: MessageType.Shutdown;
+        body: ShutdownRequest;
+    }
+    // ----------------------------------------------------------------
+    export interface ErrorInfo
+    {
+        code: number;
+        message?: string;
+    }
+
+    export interface ErrorMessage extends BasicMessage
+    {
+        type: MessageType.Error;
+        body: ErrorInfo;
+    }
+    // ----------------------------------------------------------------
+    export type Message =
+        | AckMessage
+        | VersionMessage
+        | VerifyMessage
+        | JudgerInfoMessage
+        | StatusRequestMessage
+        | StatusReportMessage
+        | JudgeRequestMessage
+        | JudgeResultMessage
+        | JudgeStateMessage
+        | ShutdownMessage
+        | ErrorMessage;
 }
