@@ -1,7 +1,8 @@
 {
     "private": true,
     "workspaces": [
-        "packages/*"
+        "packages/*",
+        "packages/Heng-InnerProtocolSimulator/*"
     ],
     "dependencies": {
         "typescript": "^3.9.7"
@@ -13,5 +14,9 @@
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.22.0",
         "prettier": "^2.0.5"
+    },
+    "scripts":{
+        "cl-eslint":"eslint --ext .ts,.vue -f codeframe packages",
+        "cl-format":"prettier -c packages"
     }
 }

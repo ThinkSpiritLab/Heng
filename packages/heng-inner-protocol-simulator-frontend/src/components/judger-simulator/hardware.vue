@@ -3,7 +3,7 @@
         <p>{{ title }}</p>
         <p>
             <a>Current</a>
-            <input v-model.number="status.percentage" />
+            <input v-model.number="savedstatus.percentage" />
         </p>
         <div>
             <p>
@@ -13,14 +13,17 @@
                 <input v-model.number="nextval" />
                 <button
                     v-on:click="
-                        status.recent.push({ time: nexttime, val: nextval })
+                        savedstatus.recent.push({
+                            time: nexttime,
+                            val: nextval,
+                        })
                     "
                 >
                     Add
                 </button>
             </p>
         </div>
-        <div v-for="item in status.recent" v-bind:key="item">
+        <div v-for="item in savedstatus.recent" v-bind:key="item">
             <p>
                 <a>Time</a>
                 <input v-model.number="item.time" />
@@ -28,7 +31,10 @@
                 <input v-model.number="item.val" />
                 <button
                     v-on:click="
-                        status.recent.splice(status.recent.indexOf(item), 1)
+                        savedstatus.recent.splice(
+                            savedstatus.recent.indexOf(item),
+                            1
+                        )
                     "
                 >
                     Remove
@@ -48,6 +54,7 @@ export default Vue.extend({
     },
     data: function () {
         return {
+            savedstatus: status,
             nexttime: 0,
             nextval: 0,
         };
