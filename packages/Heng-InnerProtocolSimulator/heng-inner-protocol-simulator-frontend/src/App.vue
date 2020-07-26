@@ -1,16 +1,16 @@
 <template>
     <div id="app">
-        <basicmessage />
+        <judgersimulator />
     </div>
 </template>
 
 <script lang="ts">
-import basicmessage from "./components/message/basicmassage.vue";
+import judgersimulator from "./components/judger-simulator/judger-simulator.vue";
 
 export default {
     name: "App",
     components: {
-        basicmessage,
+        judgersimulator,
     },
 };
 </script>
