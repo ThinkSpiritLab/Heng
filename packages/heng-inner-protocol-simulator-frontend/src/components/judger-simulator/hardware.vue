@@ -54,7 +54,7 @@ export default Vue.extend({
     },
     data: function () {
         return {
-            savedstatus: status,
+            savedstatus: this.status,
             nexttime: 0,
             nextval: 0,
         };

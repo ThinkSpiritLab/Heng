@@ -29,13 +29,17 @@
                 v-bind:tabs="status.tabs"
                 v-bind:select="(s) => (status.activetab = s)"
             />
-            <keep-alive>
-                <hardware
-                    v-bind:title="status.activetab"
-                    v-bind:status="status[status.activetab]"
-                    v-bind:class="['tab']"
-                />
-            </keep-alive>
+            <div v-for="tab in status.tabs" v-bind:key="tab">
+                <keep-alive>
+                    <hardware
+                        v-if="tab === status.activetab"
+                        v-bind:title="tab"
+                        v-bind:status="status[tab]"
+                        v-bind:callback="(s) => (status[tab] = s)"
+                        v-bind:class="['tab', tab]"
+                    />
+                </keep-alive>
+            </div>
         </div>
     </div>
 </template>
