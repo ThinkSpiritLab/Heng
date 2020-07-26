@@ -1,12 +1,13 @@
 <template>
     <div>
         <h1>评测端模拟</h1>
-        <button
+        <!-- <button
             v-for="tab in tabs"
             v-bind:key="tab"
             v-bind:class="['tab-button', { active: activetab === tab }]"
             v-on:click="activetab = tab"
-        >{{ tab }}</button>
+        >{{ tab }}</button>-->
+        <tabselect v-bind:tabs="tabs" v-bind:select="(s)=>activetab=s" />
         <div v-if="activetab==='message'" class="tab">
             <p>TODO</p>
         </div>
@@ -21,25 +22,27 @@
                 <input v-model.number="port" placeholder="8080" />
             </p>
             <button v-on:click="connect">连接</button>
+            <button v-on:click="connection.close()">断开</button>
         </div>
         <div v-else-if="activetab==='setstatus'" class="tab">
-            <p>TODO</p>
+            <tabselect v-bind:tabs="status.tabs" v-bind:select="(s)=>status.activetab=s" />
+            <keep-alive>
+                <hardware
+                    v-bind:title="status.activetab"
+                    v-bind:status="status[status.activetab]"
+                    v-bind:class="['tab']"
+                />
+            </keep-alive>
         </div>
     </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-// import WebSocket from "ws";
+import hardware from "./hardware.vue";
+import tabselect from "../tabselect.vue";
 export default Vue.extend({
     name: "judgersimulator",
-    data: function () //:
-    // {
-    //     connection: WebSocket | null;
-    //     connected: boolean;
-    //     server: string;
-    //     port: number;
-    // }
-    {
+    data: function () {
         return {
             connection: null,
             connected: false,
@@ -50,6 +53,18 @@ export default Vue.extend({
             serverpublickey: "",
             judgerprivatekey: "",
             judgerkeynumber: "",
+            status: {
+                activetab: "cpu",
+                tabs: ["cpu", "memory"],
+                cpu: {
+                    percentage: 0,
+                    recent: [],
+                },
+                memory: {
+                    percentage: 0,
+                    recent: [],
+                },
+            },
         };
     },
     methods: {
@@ -65,26 +80,14 @@ export default Vue.extend({
             };
         },
     },
+    components: {
+        hardware,
+        tabselect,
+    },
 });
 </script>
 
 <style scoped>
-.tab-button {
-    padding: 6px 10px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    background: #f0f0f0;
-    margin-bottom: -1px;
-    margin-right: -1px;
-}
-.tab-button:hover {
-    background: #e0e0e0;
-}
-.tab-button.active {
-    background: #e0e0e0;
-}
 .tab {
     border: 1px solid #ccc;
     padding: 10px;
