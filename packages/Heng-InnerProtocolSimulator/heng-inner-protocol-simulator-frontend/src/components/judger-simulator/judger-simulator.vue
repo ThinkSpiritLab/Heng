@@ -7,11 +7,11 @@
             v-bind:class="['tab-button', { active: activetab === tab }]"
             v-on:click="activetab = tab"
         >{{ tab }}</button>-->
-        <tabselect v-bind:tabs="tabs" v-bind:select="(s)=>activetab=s" />
-        <div v-if="activetab==='message'" class="tab">
+        <tabselect v-bind:tabs="tabs" v-bind:select="(s) => (activetab = s)" />
+        <div v-if="activetab === 'message'" class="tab">
             <p>TODO</p>
         </div>
-        <div v-else-if="activetab==='server'" class="tab">
+        <div v-else-if="activetab === 'server'" class="tab">
             <p>服务器连接面板</p>
             <p>
                 <a>服务器</a>
@@ -24,8 +24,11 @@
             <button v-on:click="connect">连接</button>
             <button v-on:click="connection.close()">断开</button>
         </div>
-        <div v-else-if="activetab==='setstatus'" class="tab">
-            <tabselect v-bind:tabs="status.tabs" v-bind:select="(s)=>status.activetab=s" />
+        <div v-else-if="activetab === 'setstatus'" class="tab">
+            <tabselect
+                v-bind:tabs="status.tabs"
+                v-bind:select="(s) => (status.activetab = s)"
+            />
             <keep-alive>
                 <hardware
                     v-bind:title="status.activetab"

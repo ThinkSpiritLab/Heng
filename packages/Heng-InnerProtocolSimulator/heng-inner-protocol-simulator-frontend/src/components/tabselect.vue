@@ -5,7 +5,9 @@
             v-bind:key="tab"
             v-bind:class="['tab-button', { active: activetab === tab }]"
             v-on:click="select(tab)"
-        >{{ tab }}</button>
+        >
+            {{ tab }}
+        </button>
     </div>
 </template>
 
