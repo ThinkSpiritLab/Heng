@@ -17,7 +17,6 @@
     },
     "scripts":{
         "ci-eslint":"eslint --ext .ts,.vue -f codeframe packages",
-        "ci-format":"prettier -c packages",
-        "pcck":"yarn ci-eslint&&yarn ci-format"
+        "ci-format":"prettier -c packages"
     }
 }
