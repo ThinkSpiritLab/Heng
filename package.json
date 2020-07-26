@@ -16,7 +16,8 @@
         "prettier": "^2.0.5"
     },
     "scripts":{
-        "cl-eslint":"eslint --ext .ts,.vue -f codeframe packages",
-        "cl-format":"prettier -c packages"
+        "ci-eslint":"eslint --ext .ts,.vue -f codeframe packages",
+        "ci-format":"prettier -c packages",
+        "pcck":"yarn ci-eslint&&yarn ci-format"
     }
 }

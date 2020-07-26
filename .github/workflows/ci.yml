@@ -12,7 +12,7 @@ jobs:
       with:
         node-version: '12'
     - run: yarn install
-    - run: npx eslint --ext .ts -f codeframe packages
+    - run: npx eslint --ext .ts,.vue -f codeframe packages
 
   format:
     name: Format
