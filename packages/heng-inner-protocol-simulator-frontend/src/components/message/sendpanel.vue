@@ -32,6 +32,10 @@
                         v-on:send="sendmessage"
                         v-on:update="updatebody"
                     />
+                    <edit-verify-message
+                        v-show="messagetype === 3"
+                        v-on:update="updatebody"
+                    />
                 </div>
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
@@ -51,6 +55,7 @@ import Vue from "vue";
 import verselect from "../verselect.vue";
 import editRawMessage from "./edit/editetrawmessage.vue";
 import editversionmessage from "./edit/editversionmesage.vue";
+import editVerifyMessage from "./edit/editVerifyMessage.vue";
 export default Vue.extend({
     name: "sendpanel",
     props: ["connection", "send"],
@@ -97,7 +102,12 @@ export default Vue.extend({
             });
         },
     },
-    components: { editversionmessage, verselect, editRawMessage },
+    components: {
+        editversionmessage,
+        verselect,
+        editRawMessage,
+        editVerifyMessage,
+    },
 });
 </script>
 <style scoped>
@@ -129,6 +139,7 @@ export default Vue.extend({
     margin: 10px;
     min-width: 400px;
     /* height: 100%; */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -142,10 +153,13 @@ export default Vue.extend({
     border: 2px solid #aaa;
     margin: 10px;
     /* height: 100%; */
+    width: 25%;
     min-width: 400px;
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    word-break: break-all;
 }
 .custom-edit {
     flex-grow: 1;
