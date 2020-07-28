@@ -81,8 +81,12 @@ export default Vue.extend({
             messages: {
                 curtab: "send",
                 tabs: ["send", "received"],
-                send: [],
-                received: [],
+                send: {
+                    other: [],
+                },
+                received: {
+                    other: [],
+                },
             },
             status: {
                 activetab: "cpu",
@@ -114,13 +118,29 @@ export default Vue.extend({
                 let str = msg.data;
                 console.log(str);
                 let data = JSON.parse(str);
-                that.messages.received.push(data);
+                if (data.contextID != undefined) {
+                    if (that.messages.received[data.contextID] === undefined) {
+                        that.messages.received[data.contextID] = new Array();
+                    }
+                    that.messages.received[data.contextID].push(data);
+                } else {
+                    that.messages.received.other.push(data);
+                }
             };
             this.connection.onerror = function (e) {
                 alert("Error: " + JSON.stringify(e));
             };
         },
         send: function (msg) {
+            let data = msg;
+            if (data.contextID != undefined) {
+                if (this.messages.send[data.contextID] === undefined) {
+                    this.messages.send[data.contextID] = new Array();
+                }
+                this.messages.send[data.contextID].push(data);
+            } else {
+                this.messages.send.other.push(data);
+            }
             let str = JSON.stringify(msg);
             if (this.connection != undefined) {
                 console.log("send" + str);

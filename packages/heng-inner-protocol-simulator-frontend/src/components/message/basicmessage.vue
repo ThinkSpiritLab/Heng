@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="message-card">
         <p>
             <a>ContextID : </a><a>{{ message.contextID }}</a>
         </p>
@@ -17,4 +17,11 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.card {
+    border: 1px solid #ccc;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 10px;
+}
+</style>
