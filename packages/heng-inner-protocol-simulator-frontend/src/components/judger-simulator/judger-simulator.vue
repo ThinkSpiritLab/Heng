@@ -14,11 +14,11 @@
                 v-bind:select="(s) => (messages.curtab = s)"
             />
             <div v-if="messages.curtab === 'send'">
-                <messages v-bind:messages="messages.send" />
                 <sendpanel
                     v-bind:connection="connection"
                     v-bind:send="(msg) => send(msg)"
                 />
+                <messages v-bind:messages="messages.send" />
             </div>
             <div v-if="messages.curtab === 'received'">
                 <messages v-bind:messages="messages.received" />
