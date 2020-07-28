@@ -1,6 +1,6 @@
 <template>
     <div>
-        <textarea v-model.trim="msg" v-on:change="update" />
+        <textarea class="raw-edit" v-model.trim="msg" v-on:change="update" />
         <!-- <button v-on:click="click">Send</button> -->
     </div>
 </template>
@@ -24,3 +24,11 @@ export default Vue.extend({
     },
 });
 </script>
+
+<style scoped>
+.raw-edit {
+    height: 200px;
+    width: 70%;
+    flex-grow: 1;
+}
+</style>

@@ -59,8 +59,7 @@ export default Vue.extend({
     border-radius: 5px;
     cursor: pointer;
     background: #f0f0f0;
-    margin-bottom: -1px;
-    margin-right: -1px;
+    flex-grow: 1;
 }
 .side-button:hover {
     background: #e0e0e0;
@@ -73,6 +72,10 @@ export default Vue.extend({
     margin: 0;
     padding: 0 10px 0 0;
     list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     /* border-right: 1px solid #ccc; */
 }
 </style>

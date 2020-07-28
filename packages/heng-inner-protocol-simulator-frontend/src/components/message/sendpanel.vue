@@ -1,30 +1,38 @@
 <template>
     <div class="pannel">
         <div class="edit-area">
-            <verselect
-                v-bind:tabs="messagetypes"
-                v-bind:select="(s) => (messagetype = s)"
-            />
+            <div class="side-pannel">
+                <a>消息类型选择</a>
+                <verselect
+                    v-bind:tabs="messagetypes"
+                    v-bind:select="(s) => (messagetype = s)"
+                />
+            </div>
             <div class="edit-pannel">
                 <div>
                     <p><a>ContextID</a> <input v-model.trim="contextid" /></p>
                 </div>
-                <edit-raw-message
-                    v-show="messagetype === 0"
-                    v-on:send="sendraw"
-                    v-on:update="update"
-                />
-                <div v-show="messagetype === 1">
-                    <p>ackmessage has no config</p>
-                    <button v-on:click="updatebody(undefined)">
-                        Save
-                    </button>
+                <div class="custom-edit">
+                    <edit-raw-message
+                        v-show="messagetype === 0"
+                        v-on:send="sendraw"
+                        v-on:update="update"
+                    />
+                    <div v-show="messagetype === 1">
+                        <p>ackmessage has no config</p>
+                        <button
+                            v-on:click="updatebody(undefined)"
+                            class="save-btn"
+                        >
+                            Save
+                        </button>
+                    </div>
+                    <editversionmessage
+                        v-show="messagetype === 2"
+                        v-on:send="sendmessage"
+                        v-on:update="updatebody"
+                    />
                 </div>
-                <editversionmessage
-                    v-show="messagetype === 2"
-                    v-on:send="sendmessage"
-                    v-on:update="updatebody"
-                />
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
                         Send
@@ -99,16 +107,26 @@ export default Vue.extend({
     padding: 10px;
 }
 .edit-area {
-    /* max-width: 500px; */
-    border: 2px solid #777;
+    /* max-width: 1000px; */
+    /* border: 2px solid #777; */
     padding-left: 10px;
     display: flex;
     align-items: stretch;
     justify-content: center;
-    height: 400px;
+    height: 500px;
+}
+.side-pannel {
+    border: 2px solid #aaa;
+    margin: 10px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
 }
 .edit-pannel {
-    border: 2px solid #777;
+    border: 2px solid #aaa;
+    margin: 10px;
     min-width: 400px;
     /* height: 100%; */
     display: flex;
@@ -121,14 +139,23 @@ export default Vue.extend({
     justify-content: center;
 }
 .raw-view {
-    border: 2px solid #777;
+    border: 2px solid #aaa;
+    margin: 10px;
     /* height: 100%; */
     min-width: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.send-btn {
+.custom-edit {
     flex-grow: 1;
+}
+.send-btn {
+    width: 100%;
+    height: 50px;
+}
+.save-btn {
+    width: 70%;
+    height: 50px;
 }
 </style>
