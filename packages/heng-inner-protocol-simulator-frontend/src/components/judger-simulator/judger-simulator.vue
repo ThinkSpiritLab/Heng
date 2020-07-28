@@ -13,15 +13,19 @@
                 v-bind:tabs="messages.tabs"
                 v-bind:select="(s) => (messages.curtab = s)"
             />
-            <div v-show="messages.curtab === 'send'">
+            <div v-show="messages.curtab === 'new'">
                 <sendpanel
                     v-bind:connection="connection"
                     v-bind:send="(msg) => send(msg)"
                 />
+            </div>
+            <div v-show="messages.curtab === 'send'">
                 <messages v-bind:messages="messages.send" />
+                <!-- <p>{{ JSON.stringify(messages.send) }}</p> -->
             </div>
             <div v-show="messages.curtab === 'received'">
                 <messages v-bind:messages="messages.received" />
+                <!-- <p>{{ JSON.stringify(messages.received) }}</p> -->
             </div>
         </div>
         <div v-show="activetab === 'server'" class="tab">
@@ -79,8 +83,8 @@ export default Vue.extend({
             judgerprivatekey: "",
             judgerkeynumber: "",
             messages: {
-                curtab: "send",
-                tabs: ["send", "received"],
+                curtab: "new",
+                tabs: ["new", "send", "received"],
                 send: {
                     other: [],
                 },
@@ -120,7 +124,12 @@ export default Vue.extend({
                 let data = JSON.parse(str);
                 if (data.contextID != undefined) {
                     if (that.messages.received[data.contextID] === undefined) {
-                        that.messages.received[data.contextID] = new Array();
+                        // that.messages.received[data.contextID] = new Array();
+                        Vue.set(
+                            that.messages.received,
+                            data.contextID,
+                            new Array()
+                        );
                     }
                     that.messages.received[data.contextID].push(data);
                 } else {
@@ -135,7 +144,8 @@ export default Vue.extend({
             let data = msg;
             if (data.contextID != undefined) {
                 if (this.messages.send[data.contextID] === undefined) {
-                    this.messages.send[data.contextID] = new Array();
+                    // this.messages.send[data.contextID] = new Array();
+                    Vue.set(this.messages.send, data.contextID, new Array());
                 }
                 this.messages.send[data.contextID].push(data);
             } else {

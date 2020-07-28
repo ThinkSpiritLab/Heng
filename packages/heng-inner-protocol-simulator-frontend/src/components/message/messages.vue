@@ -1,6 +1,5 @@
 <template>
     <div class="message-pannel">
-        <!-- <p>{{ JSON.stringify(messages) }}</p> -->
         <div class="msg-select">
             <p>ContextID</p>
             <verselect
@@ -22,6 +21,7 @@
                 <basicmessage v-bind:message="msg" />
             </div>
         </div>
+        <!-- <p>{{ JSON.stringify(messages) }}</p> -->
     </div>
 </template>
 
