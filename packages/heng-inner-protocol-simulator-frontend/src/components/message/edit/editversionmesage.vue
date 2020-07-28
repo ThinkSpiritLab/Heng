@@ -10,8 +10,7 @@
                 Remove
             </button>
         </p>
-
-        <button v-on:click="send">Send</button>
+        <button v-on:click="update">Save</button>
     </div>
 </template>
 
@@ -26,8 +25,8 @@ export default Vue.extend({
         };
     },
     methods: {
-        send: function () {
-            this.$emit("send", this.version);
+        update: function () {
+            this.$emit("update", this.version);
         },
     },
 });

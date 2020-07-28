@@ -9,16 +9,30 @@
                 <div>
                     <p><a>ContextID</a> <input v-model.trim="contextid" /></p>
                 </div>
+                <edit-raw-message
+                    v-show="messagetype === 0"
+                    v-on:send="sendraw"
+                    v-on:update="update"
+                />
                 <div v-show="messagetype === 1">
                     <p>ackmessage has no config</p>
-                    <button v-on:click="sendmessage()">
-                        Send
+                    <button v-on:click="updatebody(undefined)">
+                        Save
                     </button>
                 </div>
                 <editversionmessage
                     v-show="messagetype === 2"
                     v-on:send="sendmessage"
+                    v-on:update="updatebody"
                 />
+                <div>
+                    <button v-on:click="sendraw(message)" class="send-btn">
+                        Send
+                    </button>
+                </div>
+            </div>
+            <div class="raw-view">
+                <p>{{ JSON.stringify(message) }}</p>
             </div>
         </div>
     </div>
@@ -27,6 +41,7 @@
 <script lang="ts">
 import Vue from "vue";
 import verselect from "../verselect.vue";
+import editRawMessage from "./edit/editetrawmessage.vue";
 import editversionmessage from "./edit/editversionmesage.vue";
 export default Vue.extend({
     name: "sendpanel",
@@ -36,6 +51,7 @@ export default Vue.extend({
             messagetype: 0,
             contextid: 0,
             messagetypes: {
+                raw: 0,
                 ack: 1,
                 version: 2,
                 verify: 3,
@@ -48,9 +64,23 @@ export default Vue.extend({
                 shutdown: 126,
                 error: 127,
             },
+            message: "",
         };
     },
     methods: {
+        update: function (msg) {
+            this.message = JSON.parse(msg);
+        },
+        updatebody: function (msg) {
+            this.message = {
+                contextid: this.contextid,
+                type: this.messagetype,
+                body: msg,
+            };
+        },
+        sendraw: function (rawmessage) {
+            this.send(rawmessage);
+        },
         sendmessage: function (body) {
             this.send({
                 contextid: this.contextid,
@@ -59,7 +89,7 @@ export default Vue.extend({
             });
         },
     },
-    components: { editversionmessage, verselect },
+    components: { editversionmessage, verselect, editRawMessage },
 });
 </script>
 <style scoped>
@@ -70,15 +100,35 @@ export default Vue.extend({
 }
 .edit-area {
     /* max-width: 500px; */
+    border: 2px solid #777;
     padding-left: 10px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    height: 400px;
+}
+.edit-pannel {
+    border: 2px solid #777;
+    min-width: 400px;
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.edit-pannel > {
+    justify-content: center;
+}
+.raw-view {
+    border: 2px solid #777;
+    /* height: 100%; */
+    min-width: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.edit-pannel {
-    min-width: 400px;
-    display: block;
-    align-items: baseline;
-    justify-content: center;
+.send-btn {
+    flex-grow: 1;
 }
 </style>
