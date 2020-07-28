@@ -123,7 +123,7 @@ export default Vue.extend({
     display: flex;
     align-items: stretch;
     justify-content: center;
-    height: 500px;
+    /* height: 500px; */
 }
 .side-pannel {
     border: 2px solid #aaa;
