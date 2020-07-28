@@ -25,9 +25,9 @@
                 <textarea class="edit-key" v-model.trim="private_key" />
             </div>
             <div class="tool-row">
-                <p>cleartext</p>
+                <p>Plaintext</p>
                 <textarea class="edit-key" v-model.trim="cleartext" />
-                <p>*********</p>
+                <p>Ciphertext</p>
                 <textarea class="edit-key" v-model.trim="encrypted" />
             </div>
             <div class="tool-row">
