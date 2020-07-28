@@ -18,9 +18,10 @@
         <div class="message-card">
             <ackmessage v-if="message.type === 1" v-bind:message="message" />
             <verify-message
-                v-if="message.type === 3"
+                v-else-if="message.type === 3"
                 v-bind:message="message"
             />
+            <general-message v-else v-bind:message="message" />
         </div>
     </div>
 </template>
@@ -29,19 +30,20 @@
 import Vue from "vue";
 import ackmessage from "./view/ackmessage.vue";
 import verifyMessage from "./view/VerifyMessage.vue";
+import GeneralMessage from "./view/GeneralMessage.vue";
 export default Vue.extend({
     name: "basicmessage",
     props: ["message"],
     data: function () {
         return { showRaw: false };
     },
-    components: { ackmessage, verifyMessage },
+    components: { ackmessage, verifyMessage, GeneralMessage },
 });
 </script>
 
 <style>
 .message-pannel {
-    border: 1px solid #ccc;
+    border: 2px solid #aaa;
     margin: 5px;
     display: flex;
     align-items: stretch;
