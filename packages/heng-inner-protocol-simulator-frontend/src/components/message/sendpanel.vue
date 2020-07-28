@@ -81,7 +81,7 @@ export default Vue.extend({
         },
         updatebody: function (msg) {
             this.message = {
-                contextid: this.contextid,
+                contextID: this.contextid,
                 type: this.messagetype,
                 body: msg,
             };
