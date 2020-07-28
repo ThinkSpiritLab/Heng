@@ -8,23 +8,23 @@
             v-on:click="activetab = tab"
         >{{ tab }}</button>-->
         <tabselect v-bind:tabs="tabs" v-bind:select="(s) => (activetab = s)" />
-        <div v-if="activetab === 'message'" class="tab">
+        <div v-show="activetab === 'message'" class="tab">
             <tabselect
                 v-bind:tabs="messages.tabs"
                 v-bind:select="(s) => (messages.curtab = s)"
             />
-            <div v-if="messages.curtab === 'send'">
+            <div v-show="messages.curtab === 'send'">
                 <sendpanel
                     v-bind:connection="connection"
                     v-bind:send="(msg) => send(msg)"
                 />
                 <messages v-bind:messages="messages.send" />
             </div>
-            <div v-if="messages.curtab === 'received'">
+            <div v-show="messages.curtab === 'received'">
                 <messages v-bind:messages="messages.received" />
             </div>
         </div>
-        <div v-else-if="activetab === 'server'" class="tab">
+        <div v-show="activetab === 'server'" class="tab">
             <p>服务器连接面板</p>
             <p>
                 <a>服务器</a>
@@ -40,7 +40,7 @@
             </button>
             <p v-if="connection != undefined">{{ connection.readyState }}</p>
         </div>
-        <div v-else-if="activetab === 'setstatus'" class="tab">
+        <div v-show="activetab === 'setstatus'" class="tab">
             <tabselect
                 v-bind:tabs="status.tabs"
                 v-bind:select="(s) => (status.activetab = s)"
@@ -48,7 +48,7 @@
             <div v-for="tab in status.tabs" v-bind:key="tab">
                 <keep-alive>
                     <hardware
-                        v-if="tab === status.activetab"
+                        v-show="tab === status.activetab"
                         v-bind:title="tab"
                         v-bind:status="status[tab]"
                         v-bind:callback="(s) => (status[tab] = s)"
