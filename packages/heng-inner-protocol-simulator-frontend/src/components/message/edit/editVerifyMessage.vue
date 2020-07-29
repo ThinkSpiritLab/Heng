@@ -82,7 +82,7 @@ export default Vue.extend({
             this.$emit(
                 "update",
                 Object.assign(
-                    { step: this.curmod },
+                    { step: Number(this.curmod) },
                     this.verifyPayload[this.curmod]
                 )
             );
