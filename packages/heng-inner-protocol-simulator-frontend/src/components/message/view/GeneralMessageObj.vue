@@ -1,10 +1,12 @@
 <template>
     <div>
         <div class="row">
-            <div class="buttom grow" v-on:click="inDetail = !inDetail">
+            <div class="button grow no-break" v-on:click="inDetail = !inDetail">
                 {{ inDetail ? "省略" : "详情" }}
             </div>
-            <div class="buttom grow" v-on:click="copy(obj)">CopyAll</div>
+            <div class="button grow no-break" v-on:click="copy(obj)">
+                CopyAll
+            </div>
         </div>
         <div v-show="inDetail">
             <div
@@ -21,7 +23,7 @@
                         <div class="message-card">
                             {{ JSON.stringify(val).substring(0, maxlength) }}
                         </div>
-                        <div class="buttom" v-on:click="copy(val)">Copy</div>
+                        <div class="button" v-on:click="copy(val)">Copy</div>
                     </div>
                 </div>
                 <div v-else class="message-card">

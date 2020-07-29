@@ -7,7 +7,7 @@
             <div class="message-card no-grow no-break">
                 <a>Type : {{ messageType }}</a>
             </div>
-            <div class="message-card no-grow buttom no-break">
+            <div class="message-card no-grow button no-break">
                 <div v-on:click="showRaw = !showRaw">
                     切换原始信息显示
                 </div>
@@ -101,36 +101,5 @@ export default Vue.extend({
     justify-content: center;
     flex-grow: 1;
     word-break: break-all;
-}
-.buttom {
-    border: 2px solid #aaa;
-    /* border-radius: 50%; */
-    border-radius: 150px;
-    margin: 5px;
-    background: #ccc;
-}
-.row {
-    display: flex;
-    align-items: stretch;
-}
-.column {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-.grow {
-    flex-grow: 1;
-}
-.no-grow {
-    flex-grow: 0;
-}
-.no-break {
-    word-break: keep-all;
-}
-.no-border {
-    border: none;
-}
-.no-margin {
-    margin: 0;
 }
 </style>

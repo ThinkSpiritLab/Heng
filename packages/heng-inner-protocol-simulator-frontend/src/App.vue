@@ -43,4 +43,42 @@ export default {
     border: 1px solid #ccc;
     padding: 10px;
 }
+.buttom {
+    border: 2px solid #aaa;
+    /*拼写错误，修复完成后删除 */
+    border-radius: 150px;
+    margin: 5px;
+    background: #f00;
+}
+.button {
+    border: 2px solid #aaa;
+    /* border-radius: 50%; */
+    border-radius: 150px;
+    margin: 5px;
+    background: #ccc;
+}
+.row {
+    display: flex;
+    align-items: stretch;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.grow {
+    flex-grow: 1;
+}
+.no-grow {
+    flex-grow: 0;
+}
+.no-break {
+    word-break: keep-all;
+}
+.no-border {
+    border: none;
+}
+.no-margin {
+    margin: 0;
+}
 </style>
