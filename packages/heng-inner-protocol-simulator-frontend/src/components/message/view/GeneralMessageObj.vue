@@ -1,6 +1,12 @@
 <template>
     <div>
-        <div>
+        <div class="row">
+            <div class="buttom grow" v-on:click="inDetail = !inDetail">
+                {{ inDetail ? "省略" : "详情" }}
+            </div>
+            <div class="buttom grow" v-on:click="copy(obj)">CopyAll</div>
+        </div>
+        <div v-show="inDetail">
             <div
                 v-for="(val, key) in obj"
                 v-bind:key="key"
@@ -23,9 +29,11 @@
                         v-bind:obj="val"
                         v-bind:maxlength="maxlength"
                     />
-                    <div class="buttom" v-on:click="copy(val)">Copy</div>
                 </div>
             </div>
+        </div>
+        <div v-show="!inDetail">
+            ...
         </div>
     </div>
 </template>
@@ -35,6 +43,11 @@ import Vue from "vue";
 export default Vue.extend({
     name: "generalMessageObj",
     props: ["obj", "maxlength"],
+    data: function () {
+        return {
+            inDetail: true,
+        };
+    },
     methods: {
         justshow: function (obj) {
             // console.log(obj + " is " + !(obj instanceof Object));
