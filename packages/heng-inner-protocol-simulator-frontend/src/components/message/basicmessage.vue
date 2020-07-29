@@ -4,6 +4,9 @@
             <div class="message-card no-grow no-break">
                 <a>ContextID : {{ message.contextID }}</a>
             </div>
+            <div class="message-card no-grow no-break">
+                <a>Type : {{ messageType }}</a>
+            </div>
             <div class="message-card no-grow buttom no-break">
                 <div v-on:click="showRaw = !showRaw">
                     切换原始信息显示
@@ -38,6 +41,31 @@ export default Vue.extend({
     props: ["message"],
     data: function () {
         return { showRaw: false };
+    },
+    computed: {
+        messageType: function () {
+            const types = {
+                1: "Ack",
+                2: "Version",
+                3: "Verify",
+                4: "JudgerInfo",
+                17: "StatusReport",
+                18: "StatusRequest",
+                33: "JudgeRequest",
+                34: "JudgeResult",
+                35: "JudegState",
+                126: "Shutdown",
+                127: "Error",
+            };
+            if (
+                this.message.type != undefined &&
+                types[this.message.type] != undefined
+            ) {
+                return types[this.message.type];
+            } else {
+                return "Unknown";
+            }
+        },
     },
     components: { ackmessage, /*verifyMessage,*/ GeneralMessage },
 });
