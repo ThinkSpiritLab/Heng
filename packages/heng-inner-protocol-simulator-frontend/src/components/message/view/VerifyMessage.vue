@@ -11,7 +11,7 @@
                 </div>
                 <div class="message-card no-grow"><a>:</a></div>
                 <div class="message-card">
-                    <a>{{ val }}</a>
+                    <a>{{ JSON.stringify(val).substring(0, 50) }}</a>
                 </div>
             </div>
         </div>

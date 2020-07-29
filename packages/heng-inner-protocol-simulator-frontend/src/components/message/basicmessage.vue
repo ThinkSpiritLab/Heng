@@ -1,27 +1,29 @@
 <template>
     <div class="message-pannel">
-        <div class="message-card">
-            <div class="message-pannel">
+        <div class="message-card no-grow">
+            <div class="message-card no-grow no-break">
                 <a>ContextID : {{ message.contextID }}</a>
             </div>
-            <div class="message-pannel">
-                <div class="message-card no-grow">
-                    <button v-on:click="showRaw = !showRaw">
-                        切换原始信息显示
-                    </button>
+            <div class="message-card no-grow buttom no-break">
+                <div v-on:click="showRaw = !showRaw">
+                    切换原始信息显示
                 </div>
-                <div class="message-card raw-view" v-if="showRaw">
-                    {{ JSON.stringify(message) }}
-                </div>
+            </div>
+            <div class="message-card raw-view" v-if="showRaw">
+                {{ JSON.stringify(message) }}
             </div>
         </div>
         <div class="message-card">
             <ackmessage v-if="message.type === 1" v-bind:message="message" />
-            <verify-message
+            <!-- <verify-message
                 v-else-if="message.type === 3"
                 v-bind:message="message"
+            /> -->
+            <general-message
+                v-else
+                v-bind:message="message"
+                v-bind:maxlength="50"
             />
-            <general-message v-else v-bind:message="message" />
         </div>
     </div>
 </template>
@@ -29,7 +31,7 @@
 <script lang="ts">
 import Vue from "vue";
 import ackmessage from "./view/ackmessage.vue";
-import verifyMessage from "./view/VerifyMessage.vue";
+// import verifyMessage from "./view/VerifyMessage.vue";
 import GeneralMessage from "./view/GeneralMessage.vue";
 export default Vue.extend({
     name: "basicmessage",
@@ -37,7 +39,7 @@ export default Vue.extend({
     data: function () {
         return { showRaw: false };
     },
-    components: { ackmessage, verifyMessage, GeneralMessage },
+    components: { ackmessage, /*verifyMessage,*/ GeneralMessage },
 });
 </script>
 
@@ -55,7 +57,7 @@ export default Vue.extend({
     flex-grow: 1;
     border: 1px solid #ccc;
     border-radius: 5px;
-    max-width: 95%;
+    max-width: 100%;
     margin: 5px;
     display: flex;
     flex-direction: column;
@@ -65,19 +67,42 @@ export default Vue.extend({
 }
 .raw-view {
     border: 2px solid #aaa;
-    margin: 10px;
     /* height: 100%; */
-    max-width: 70%;
-    flex-grow: 1;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
+    flex-grow: 1;
     word-break: break-all;
+}
+.buttom {
+    border: 2px solid #aaa;
+    /* border-radius: 50%; */
+    border-radius: 150px;
+    margin: 5px;
+    background: #ccc;
+}
+.row {
+    display: flex;
+    align-items: stretch;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.grow {
+    flex-grow: 1;
 }
 .no-grow {
     flex-grow: 0;
 }
 .no-break {
     word-break: keep-all;
+}
+.no-border {
+    border: none;
+}
+.no-margin {
+    margin: 0;
 }
 </style>
