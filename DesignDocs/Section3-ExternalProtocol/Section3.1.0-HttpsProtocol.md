@@ -91,7 +91,7 @@
 
 #### 签名
 
-Get方法的签名应当将访问的URL中 `signature` 参数填写为 `7def6260-cf55-11ea-87d0-0242ac130003`,然后对 `URL` 字符串如下处理得到签名
+Get方法的签名应当构造不含主机名的URL串（即如 `方法名?参数名=值&参数2=值` 的字符串），其中 `signature` 参数填写为 `7def6260-cf55-11ea-87d0-0242ac130003`,然后,构造的字符串如下处理得到签名
 
 ```typescript
 let signature = crypto.createHash('sha256')
@@ -101,11 +101,11 @@ let signature = crypto.createHash('sha256')
 
 以查询评测为例。假设访问时间为 `1595779915` , 选定的消息id为 `125E591`,AccessKey 为 `10A9FC6FF1F`,SecrectKey为 `5F1DAB4B`
 
-首先构造 URL 为 `https://api.localhost/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&signature=7def6260-cf55-11ea-87d0-0242ac130003`。
+首先构造字符串为 `/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&signature=7def6260-cf55-11ea-87d0-0242ac130003`。
 
-然后计算得到 `373adf261028480a0bf6885a443f93c7df429a41204af1d22063d1ccd48026be`。
+然后计算得到 `876772dcf8329bacec76fc06979c0fe42c74b161c94bd9608adbfdc6c82fcbb0`。
 
-拼接得到真正的 URL `https://api.localhost/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&signature=373adf261028480a0bf6885a443f93c7df429a41204af1d22063d1ccd48026be`。
+拼接得到真正的 URL `https://api.localhost/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&signature=876772dcf8329bacec76fc06979c0fe42c74b161c94bd9608adbfdc6c82fcbb0`。
 
 ### Post方法
 
@@ -125,4 +125,10 @@ let signature = crypto.createHash('sha256')
 
 #### Post签名
 
-将载荷的 `signature` 字段填写为 `7def6260-cf55-11ea-87d0-0242ac130003`,使用 `JSON.stringify()`将载荷转化为字符串，仿照Get的方法签名即可。
+将载荷使用 `JSON.stringify` 字符串化，取 `sha256` 哈希，作为 `payloadHash` 加在 URL 参数中，对URL使用如同Get签名的方法签名。
+
+如提交任务，假设载荷哈希为 `917cbcf20ffdb44b525db310004af7597b512c57cf37ad585d9b37b5e6617cca`，其它同 Get 例。首先按要求拼接字符串为 `/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&payloadHash=917cbcf20ffdb44b525db310004af7597b512c57cf37ad585d9b37b5e6617cca&signature=7def6260-cf55-11ea-87d0-0242ac130003`
+
+计算得到签名 `3bc7ae6e1145be2dc1f02ba3228973221ac517642c82221fe91b6e8eb6756b97`。即得到URL为
+
+`https://api.localhost/v1/judges?ackey=10A9FC6FF1F&timestamp=1595779915&messageid=125E591&payloadHash=917cbcf20ffdb44b525db310004af7597b512c57cf37ad585d9b37b5e6617cca&signature=3bc7ae6e1145be2dc1f02ba3228973221ac517642c82221fe91b6e8eb6756b97`
