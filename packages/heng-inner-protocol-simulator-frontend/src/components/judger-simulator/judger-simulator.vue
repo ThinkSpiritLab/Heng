@@ -44,28 +44,10 @@
             </button>
             <p v-if="connection != undefined">{{ connection.readyState }}</p>
         </div>
-        <div v-show="activetab === 'setstatus'" class="tab">
-            <tabselect
-                v-bind:tabs="status.tabs"
-                v-bind:select="(s) => (status.activetab = s)"
-            />
-            <div v-for="tab in status.tabs" v-bind:key="tab">
-                <keep-alive>
-                    <hardware
-                        v-show="tab === status.activetab"
-                        v-bind:title="tab"
-                        v-bind:status="status[tab]"
-                        v-bind:callback="(s) => (status[tab] = s)"
-                        v-bind:class="['tab', tab]"
-                    />
-                </keep-alive>
-            </div>
-        </div>
     </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import hardware from "./hardware.vue";
 import tabselect from "../tabselect.vue";
 import messages from "../message/messages.vue";
 import sendpanel from "../message/sendpanel.vue";
@@ -90,18 +72,6 @@ export default Vue.extend({
                 },
                 received: {
                     other: [],
-                },
-            },
-            status: {
-                activetab: "cpu",
-                tabs: ["cpu", "memory"],
-                cpu: {
-                    percentage: 0,
-                    recent: [],
-                },
-                memory: {
-                    percentage: 0,
-                    recent: [],
                 },
             },
         };
@@ -162,7 +132,6 @@ export default Vue.extend({
         },
     },
     components: {
-        hardware,
         tabselect,
         messages,
         sendpanel,

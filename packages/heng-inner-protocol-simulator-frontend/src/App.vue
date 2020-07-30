@@ -51,9 +51,9 @@ export default {
     background: #f00;
 }
 .button {
-    border: 2px solid #aaa;
+    border: 1px solid #aaa;
     /* border-radius: 50%; */
-    border-radius: 15px;
+    border-radius: 2px;
     margin: 5px;
     word-break: keep-all;
     background: #ccc;
@@ -79,6 +79,7 @@ export default {
 }
 .no-break {
     word-break: keep-all;
+    flex-wrap: nowrap;
 }
 .no-border {
     border: none;

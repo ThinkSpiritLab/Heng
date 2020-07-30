@@ -41,6 +41,11 @@
                         v-on:send="sendmessage"
                         v-on:update="updatebody"
                     />
+                    <edit-status-report-message
+                        v-show="messagetype === 17"
+                        v-on:send="sendmessage"
+                        v-on:update="updatebody"
+                    />
                 </div>
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
@@ -62,6 +67,7 @@ import editRawMessage from "./edit/editetrawmessage.vue";
 // import editversionmessage from "./edit/editversionmesage.vue";
 // import editVerifyMessage from "./edit/editVerifyMessage.vue";
 import editJudgerInfoMessage from "./edit/editJudgerInfoMessage.vue";
+import editStatusReportMessage from "./edit/editStatusReportMessage.vue";
 export default Vue.extend({
     name: "sendpanel",
     props: ["connection", "send"],
@@ -94,7 +100,7 @@ export default Vue.extend({
             this.message = {
                 contextID: this.contextid,
                 type: this.messagetype,
-                body: msg,
+                body: JSON.parse(JSON.stringify(msg)),
             };
         },
         sendraw: function (rawmessage) {
@@ -109,17 +115,23 @@ export default Vue.extend({
         },
     },
     components: {
-        // editversionmessage,
         verselect,
         editRawMessage,
-        editJudgerInfoMessage,
+        // editversionmessage,
         // editVerifyMessage,
+        editJudgerInfoMessage,
+        editStatusReportMessage,
     },
 });
 </script>
 <style>
 .pannel {
-    border: 2px solid #2f2f2f;
+    border: 2px solid #aaa;
+    border-radius: 5px;
+    padding: 10px;
+}
+.card {
+    border: 1px solid #aaa;
     border-radius: 5px;
     padding: 10px;
 }
@@ -182,11 +194,17 @@ export default Vue.extend({
 .tool-pannel {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    justify-content: center;
+}
+.tool-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: center;
 }
 .tool-row {
-    border: 2px solid #aaa;
+    border: 1px solid #ccc;
     margin: 10px;
     border-radius: 5px;
     display: flex;
