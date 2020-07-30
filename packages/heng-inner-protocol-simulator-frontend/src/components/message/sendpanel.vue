@@ -27,7 +27,7 @@
                             Save
                         </button>
                     </div>
-                    <editversionmessage
+                    <!-- <editversionmessage
                         v-show="messagetype === 2"
                         v-on:send="sendmessage"
                         v-on:update="updatebody"
@@ -35,7 +35,7 @@
                     <edit-verify-message
                         v-show="messagetype === 3"
                         v-on:update="updatebody"
-                    />
+                    /> -->
                 </div>
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
@@ -54,8 +54,8 @@
 import Vue from "vue";
 import verselect from "../verselect.vue";
 import editRawMessage from "./edit/editetrawmessage.vue";
-import editversionmessage from "./edit/editversionmesage.vue";
-import editVerifyMessage from "./edit/editVerifyMessage.vue";
+// import editversionmessage from "./edit/editversionmesage.vue";
+// import editVerifyMessage from "./edit/editVerifyMessage.vue";
 export default Vue.extend({
     name: "sendpanel",
     props: ["connection", "send"],
@@ -66,8 +66,8 @@ export default Vue.extend({
             messagetypes: {
                 raw: 0,
                 ack: 1,
-                version: 2,
-                verify: 3,
+                // version: 2,
+                // verify: 3,
                 judgerinfo: 4,
                 statusreport: 17,
                 statusrequest: 18,
@@ -103,10 +103,10 @@ export default Vue.extend({
         },
     },
     components: {
-        editversionmessage,
+        // editversionmessage,
         verselect,
         editRawMessage,
-        editVerifyMessage,
+        // editVerifyMessage,
     },
 });
 </script>

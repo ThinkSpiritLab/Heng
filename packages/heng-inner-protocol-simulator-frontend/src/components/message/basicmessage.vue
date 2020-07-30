@@ -46,8 +46,8 @@ export default Vue.extend({
         messageType: function () {
             const types = {
                 1: "Ack",
-                2: "Version",
-                3: "Verify",
+                // 2: "Version",
+                // 3: "Verify",
                 4: "JudgerInfo",
                 17: "StatusReport",
                 18: "StatusRequest",
