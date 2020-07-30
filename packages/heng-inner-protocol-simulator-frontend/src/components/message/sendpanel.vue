@@ -36,6 +36,11 @@
                         v-show="messagetype === 3"
                         v-on:update="updatebody"
                     /> -->
+                    <edit-judger-info-message
+                        v-show="messagetype === 4"
+                        v-on:send="sendmessage"
+                        v-on:update="updatebody"
+                    />
                 </div>
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
@@ -56,6 +61,7 @@ import verselect from "../verselect.vue";
 import editRawMessage from "./edit/editetrawmessage.vue";
 // import editversionmessage from "./edit/editversionmesage.vue";
 // import editVerifyMessage from "./edit/editVerifyMessage.vue";
+import editJudgerInfoMessage from "./edit/editJudgerInfoMessage.vue";
 export default Vue.extend({
     name: "sendpanel",
     props: ["connection", "send"],
@@ -106,11 +112,12 @@ export default Vue.extend({
         // editversionmessage,
         verselect,
         editRawMessage,
+        editJudgerInfoMessage,
         // editVerifyMessage,
     },
 });
 </script>
-<style scoped>
+<style>
 .pannel {
     border: 2px solid #2f2f2f;
     border-radius: 5px;
@@ -169,7 +176,37 @@ export default Vue.extend({
     height: 50px;
 }
 .save-btn {
-    width: 70%;
+    /* width: 70%; */
     height: 50px;
+}
+.tool-pannel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.tool-row {
+    border: 2px solid #aaa;
+    margin: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+.tool-row > * {
+    margin: 10px;
+    flex-grow: 1;
+}
+.tool-button {
+    border: 2px solid #aaa;
+    border-radius: 3px;
+    margin: 5px;
+    background: #ccc;
+    word-break: keep-all;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 </style>

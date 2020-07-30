@@ -53,9 +53,14 @@ export default {
 .button {
     border: 2px solid #aaa;
     /* border-radius: 50%; */
-    border-radius: 150px;
+    border-radius: 15px;
     margin: 5px;
+    word-break: keep-all;
     background: #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .row {
     display: flex;
