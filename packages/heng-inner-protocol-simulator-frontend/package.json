@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "simulat":"python -m http.server --directory ./dist 80",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
