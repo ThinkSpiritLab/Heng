@@ -69,7 +69,7 @@ export default Vue.extend({
     },
     methods: {
         update: function () {
-            this.$emit("update", this.body);
+            this.$emit("update", JSON.parse(JSON.stringify(this.body)));
         },
         sign: function (str, skey) {
             let sha256 = CryptoJS.algo.SHA256.create();
@@ -92,8 +92,9 @@ export default Vue.extend({
             return {
                 timestamp: this.timestamp,
                 maxTaskCount: this.maxTaskCount,
-                name: this.name,
-                software: this.software,
+                name: this.name == undefined ? undefined : this.name,
+                software:
+                    this.software == undefined ? undefined : this.software,
                 ackey: this.ackey,
                 signature: this.signature,
             };
