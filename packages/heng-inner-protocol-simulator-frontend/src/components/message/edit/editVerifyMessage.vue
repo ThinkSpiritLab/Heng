@@ -159,10 +159,11 @@ export default Vue.extend({
             console.log("encrypted:" + str);
             console.log("encryptedbuf:" + buf);
             console.log("encryptedrev:" + rev);
-            return window.btoa(str);
+            // return window.btoa(str);
+            return str;
         },
         decrypt: async function (tar) {
-            let binary = this.str2ab(window.atob(tar));
+            let binary = this.str2ab(tar);
             let decdata = await window.crypto.subtle.decrypt(
                 { name: "RSA-OAEP" },
                 await this.getpriv(this.private_key),
