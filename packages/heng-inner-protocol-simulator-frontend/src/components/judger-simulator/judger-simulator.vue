@@ -58,7 +58,7 @@ export default Vue.extend({
             connection: null,
             connected: false,
             activetab: "server",
-            tabs: ["server", "message", "setstatus"],
+            tabs: ["server", "message"],
             server: "echo.websocket.org",
             port: 80,
             serverpublickey: "",

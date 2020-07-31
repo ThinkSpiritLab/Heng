@@ -12,7 +12,7 @@
                     切换原始信息显示
                 </div>
             </div>
-            <div class="message-card raw-view" v-if="showRaw">
+            <div class="message-card raw-view-f" v-if="showRaw">
                 {{ JSON.stringify(message) }}
             </div>
         </div>
@@ -93,7 +93,7 @@ export default Vue.extend({
     justify-content: flex-start;
     word-break: break-all;
 }
-.raw-view {
+.raw-view-f {
     border: 2px solid #aaa;
     /* height: 100%; */
     display: flex;

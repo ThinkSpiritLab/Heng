@@ -30,12 +30,13 @@
                     <general-message-obj
                         v-bind:obj="val"
                         v-bind:maxlength="maxlength"
+                        v-bind:foldLevel="foldLevel - 1"
                     />
                 </div>
             </div>
         </div>
         <div v-show="!inDetail">
-            ...
+            {{ JSON.stringify(obj).substring(0, maxlength) }}...
         </div>
     </div>
 </template>
@@ -44,10 +45,10 @@
 import Vue from "vue";
 export default Vue.extend({
     name: "generalMessageObj",
-    props: ["obj", "maxlength"],
+    props: ["obj", "maxlength", "foldLevel"],
     data: function () {
         return {
-            inDetail: true,
+            inDetail: this.foldLevel != 0,
         };
     },
     methods: {

@@ -3,6 +3,7 @@
         <general-message-obj
             v-bind:obj="message"
             v-bind:maxlength="maxlength"
+            v-bind:foldLevel="2"
             class="message-card"
         />
         <!-- <general-message-obj v-bind:obj="message.body" class="message-card" /> -->
