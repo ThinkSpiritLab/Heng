@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <textarea class="raw-edit" v-model.trim="msg" v-on:change="update" />
-        <!-- <button v-on:click="click">Send</button> -->
+    <div class="tool-pannel pannel grow">
+        <textarea class="raw-edit card" v-model.trim="msg" />
+        <button v-on:click="update">Save</button>
     </div>
 </template>
 
@@ -27,8 +27,9 @@ export default Vue.extend({
 
 <style scoped>
 .raw-edit {
-    height: 200px;
-    width: 70%;
+    /* height: 200px; */
+    resize: none;
+    /* width: 100%; */
     flex-grow: 1;
 }
 </style>

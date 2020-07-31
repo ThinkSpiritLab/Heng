@@ -53,8 +53,13 @@
                     </button>
                 </div>
             </div>
-            <div class="raw-view">
-                <p>{{ JSON.stringify(message) }}</p>
+            <div class="tool-pannel pannel" style="max-width: 25%;">
+                <div class="raw-view">
+                    <p>{{ JSON.stringify(message) }}</p>
+                </div>
+                <div class="button no-grow no-break" v-on:click="copy(message)">
+                    CopyAll
+                </div>
             </div>
         </div>
     </div>
@@ -100,7 +105,10 @@ export default Vue.extend({
             this.message = {
                 contextID: this.contextid,
                 type: this.messagetype,
-                body: JSON.parse(JSON.stringify(msg)),
+                body:
+                    msg !== undefined
+                        ? JSON.parse(JSON.stringify(msg))
+                        : undefined,
             };
         },
         sendraw: function (rawmessage) {
@@ -112,6 +120,21 @@ export default Vue.extend({
                 type: this.messagetype,
                 body: body,
             });
+        },
+        copy: function (obj) {
+            let str = JSON.stringify(obj);
+            console.log("try copy: " + str);
+            const inputarea = document.createElement("input");
+            inputarea.setAttribute("readonly", "readonly");
+            inputarea.setAttribute("value", str);
+            document.body.appendChild(inputarea);
+            // inputarea.setSelectionRange(0, inputarea.value.length);
+            inputarea.select();
+            if (document.execCommand("copy")) {
+                document.execCommand("copy");
+                alert("复制了");
+            }
+            document.body.removeChild(inputarea);
         },
     },
     components: {
@@ -169,10 +192,11 @@ export default Vue.extend({
     justify-content: center;
 }
 .raw-view {
-    border: 2px solid #aaa;
+    border: 1px solid #aaa;
+    border-radius: 2px;
     margin: 10px;
     /* height: 100%; */
-    width: 25%;
+    /* width: 25%; */
     min-width: 400px;
     flex-grow: 1;
     display: flex;
@@ -182,6 +206,10 @@ export default Vue.extend({
 }
 .custom-edit {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
 }
 .send-btn {
     width: 100%;
