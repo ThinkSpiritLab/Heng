@@ -12,7 +12,7 @@
                 v-for="val in [10, 20, 30, 50, 100, 120]"
                 v-bind:key="val"
                 v-on:click="$emit('set', val)"
-                class="button"
+                class="tool-button"
             >
                 {{ val }}
             </div>
@@ -24,7 +24,7 @@
                 v-for="val in [1, 3, 5, 10]"
                 v-bind:key="'time' + val"
                 v-on:click="nexttime = val"
-                class="button"
+                class="tool-button"
             >
                 {{ val }}
             </div>
@@ -34,7 +34,7 @@
                 v-for="val in [10, 20, 30, 50, 100, 120]"
                 v-bind:key="'val' + val"
                 v-on:click="nextval = val"
-                class="button"
+                class="tool-button"
             >
                 {{ val }}
             </div>
@@ -42,7 +42,7 @@
                 v-on:click="
                     $emit('add-recent', { time: nexttime, val: nextval })
                 "
-                class="button"
+                class="tool-button"
             >
                 Add
             </div>
@@ -60,11 +60,11 @@
                 v-for="val in [10, 20, 30, 50, 100, 120]"
                 v-bind:key="val"
                 v-on:click="item.val = val"
-                class="button"
+                class="tool-button"
             >
                 {{ val }}
             </div>
-            <div v-on:click="$emit('delete-recent', index)" class="button">
+            <div v-on:click="$emit('delete-recent', index)" class="tool-button">
                 Remove
             </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="tool-pannel pannel grow">
         <textarea class="raw-edit card" v-model.trim="msg" />
-        <button v-on:click="update">Save</button>
+        <div v-on:click="update" class="tool-button">Save</div>
     </div>
 </template>
 

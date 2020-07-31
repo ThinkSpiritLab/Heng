@@ -36,13 +36,13 @@
                         <input v-model.number="tasks.preparing.downloading" />
                         <div
                             v-on:click="tasks.preparing.downloading++"
-                            class="button"
+                            class="tool-button"
                         >
                             +1
                         </div>
                         <div
                             v-on:click="tasks.preparing.downloading--"
-                            class="button"
+                            class="tool-button"
                         >
                             -1
                         </div>
@@ -52,13 +52,13 @@
                         <input v-model.number="tasks.preparing.readingCache" />
                         <div
                             v-on:click="tasks.preparing.readingCache++"
-                            class="button"
+                            class="tool-button"
                         >
                             +1
                         </div>
                         <div
                             v-on:click="tasks.preparing.readingCache--"
-                            class="button"
+                            class="tool-button"
                         >
                             -1
                         </div>
@@ -67,43 +67,46 @@
                 <div class="tool-row">
                     <div>Pending</div>
                     <input v-model.number="tasks.pending" />
-                    <div v-on:click="tasks.pending++" class="button">
+                    <div v-on:click="tasks.pending++" class="tool-button">
                         +1
                     </div>
-                    <div v-on:click="tasks.pending--" class="button">
+                    <div v-on:click="tasks.pending--" class="tool-button">
                         -1
                     </div>
                 </div>
                 <div class="tool-row">
                     <div>Running</div>
                     <input v-model.number="tasks.running" />
-                    <div v-on:click="tasks.running++" class="button">
+                    <div v-on:click="tasks.running++" class="tool-button">
                         +1
                     </div>
-                    <div v-on:click="tasks.running--" class="button">
+                    <div v-on:click="tasks.running--" class="tool-button">
                         -1
                     </div>
                 </div>
                 <div class="tool-row">
                     <div>Finished</div>
                     <input v-model.number="tasks.finished" />
-                    <div v-on:click="tasks.finished++" class="button">
+                    <div v-on:click="tasks.finished++" class="tool-button">
                         +1
                     </div>
-                    <div v-on:click="tasks.finished--" class="button">
+                    <div v-on:click="tasks.finished--" class="tool-button">
                         -1
                     </div>
                 </div>
                 <div class="tool-row">
                     <div>Total</div>
                     <input v-model.number="tasks.total" />
-                    <div v-on:click="tasks.total = totalTask" class="button">
+                    <div
+                        v-on:click="tasks.total = totalTask"
+                        class="tool-button"
+                    >
                         Sum
                     </div>
-                    <div v-on:click="tasks.total++" class="button">
+                    <div v-on:click="tasks.total++" class="tool-button">
                         +1
                     </div>
-                    <div v-on:click="tasks.total--" class="button">
+                    <div v-on:click="tasks.total--" class="tool-button">
                         -1
                     </div>
                 </div>
@@ -114,46 +117,52 @@
                 <div class="tool-row card">
                     <div>Time</div>
                     <input v-model.number="time.time" />
-                    <div v-on:click="time.time += 60" class="button">
+                    <div v-on:click="time.time += 60" class="tool-button">
                         +60
                     </div>
-                    <div v-on:click="time.time++" class="button">
+                    <div v-on:click="time.time++" class="tool-button">
                         +1
                     </div>
                     <div
                         v-on:click="time.time = Math.floor(Date.now() / 1000)"
-                        class="button"
+                        class="tool-button"
                     >
                         Now
                     </div>
-                    <div v-on:click="time.time--" class="button">
+                    <div v-on:click="time.time--" class="tool-button">
                         -1
                     </div>
-                    <div v-on:click="time.time -= 60" class="button">
+                    <div v-on:click="time.time -= 60" class="tool-button">
                         -60
                     </div>
                 </div>
                 <div class="tool-row card">
                     <div>NextReportTime</div>
                     <input v-model.number="time.nextReportTime" />
-                    <div v-on:click="time.nextReportTime += 60" class="button">
+                    <div
+                        v-on:click="time.nextReportTime += 60"
+                        class="tool-button"
+                    >
                         +60
                     </div>
-                    <div v-on:click="time.nextReportTime++" class="button">
+                    <div v-on:click="time.nextReportTime++" class="tool-button">
                         +1
                     </div>
                     <div
                         v-on:click="
                             time.nextReportTime = Math.floor(Date.now() / 1000)
                         "
-                        class="button"
+                        class="tool-button"
                     >
                         Now
                     </div>
-                    <div v-on:click="time.nextReportTime--" class="button">
+                    <div v-on:click="time.nextReportTime--" class="tool-button">
                         -1
                     </div>
-                    <div v-on:click="time.nextReportTime -= 60" class="button">
+                    <div
+                        v-on:click="time.nextReportTime -= 60"
+                        class="tool-button"
+                    >
                         -60
                     </div>
                 </div>
