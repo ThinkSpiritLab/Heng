@@ -1,14 +1,14 @@
 <template>
     <div class="pannel">
         <div class="edit-area">
-            <div class="side-pannel">
+            <div class="tool-pannel pannel">
                 <a>消息类型选择</a>
                 <verselect
                     v-bind:tabs="messagetypes"
                     v-bind:select="(s) => (messagetype = s)"
                 />
             </div>
-            <div class="edit-pannel">
+            <div class="tool-pannel pannel grow">
                 <div>
                     <p><a>ContextID</a> <input v-model.trim="contextid" /></p>
                 </div>
