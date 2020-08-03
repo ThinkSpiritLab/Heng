@@ -57,7 +57,7 @@ export default Vue.extend({
     margin: 10px;
 }
 .msg-dis {
-    width: 70%;
+    /* width: 70%; */
     border: 2px solid #aaa;
     border-radius: 5px;
     margin: 10px;

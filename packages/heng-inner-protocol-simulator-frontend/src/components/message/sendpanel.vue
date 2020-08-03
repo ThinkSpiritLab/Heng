@@ -51,6 +51,11 @@
                         v-on:send="sendmessage"
                         v-on:update="updatebody"
                     />
+                    <edit-judge-request-message
+                        v-show="messagetype === 33"
+                        v-on:send="sendmessage"
+                        v-on:update="updatebody"
+                    />
                 </div>
                 <div>
                     <button v-on:click="sendraw(message)" class="send-btn">
@@ -79,6 +84,7 @@ import editRawMessage from "./edit/editetrawmessage.vue";
 import editJudgerInfoMessage from "./edit/editJudgerInfoMessage.vue";
 import editStatusReportMessage from "./edit/editStatusReportMessage.vue";
 import editStatusRequestMessage from "./edit/editStatusRequestMessage.vue";
+import editJudgeRequestMessage from "./edit/editJudgeRequestMessage/editJudgeRequestMessage.vue";
 export default Vue.extend({
     name: "sendpanel",
     props: ["connection", "send"],
@@ -151,6 +157,7 @@ export default Vue.extend({
         editJudgerInfoMessage,
         editStatusReportMessage,
         editStatusRequestMessage,
+        editJudgeRequestMessage,
     },
 });
 </script>
@@ -204,7 +211,7 @@ export default Vue.extend({
     margin: 10px;
     /* height: 100%; */
     /* width: 25%; */
-    min-width: 400px;
+    /* min-width: 400px; */
     flex-grow: 1;
     display: flex;
     align-items: center;
